@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
-import { localhost, goerli } from 'wagmi/chains';
+import { localhost, goerli } from "wagmi/chains";
 import "@rainbow-me/rainbowkit/styles.css";
 
 import {
@@ -11,6 +11,8 @@ import {
 
 import { infuraProvider } from "wagmi/providers/infura";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+
+import { AppProvider } from "../context/context";
 
 const { chains, provider } = configureChains(
   [goerli, localhost],
@@ -40,7 +42,9 @@ const App = ({ Component, pageProps }) => {
   return (
     <WagmiConfig client={wagmiConfig}>
       <RainbowKitProvider chains={chains} theme={darkTheme()} coolMode>
+        <AppProvider>
           <Component {...pageProps} />
+        </AppProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );

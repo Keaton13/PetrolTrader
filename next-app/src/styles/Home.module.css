@@ -114,8 +114,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 75px;
-  height: 75px;
+  width: 150px;
+  height: 150px;
   padding: 25px 10px;
   margin-left: 16px;
   transform: translateZ(0);
@@ -142,7 +142,7 @@
 /* Inner Square */
 .thirteen::after {
   inset: 0;
-  padding: 1px;
+  padding: 5px;
   border-radius: var(--border-radius);
   background: linear-gradient(
     to bottom right,
