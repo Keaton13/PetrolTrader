@@ -1,34 +1,47 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "@/styles/Home.module.css";
 import Image from "next/image";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAppContext } from "../context/context";
 
 const style = {
-  connectButtonContainer: `w-2/4`,
+  connectButtonContainer: "pl-4",
+  headerButtonContainer: "flex flex-row items-center justify-center",
+  headerButton: "w-40",
 };
-
 const header = () => {
+  const { userAddress } = useAppContext();
+
   return (
     <div className={styles.description}>
-      <p>Get started by connecting your wallet! &nbsp;</p>
-      <div className={style.connectButtonContainer}>
-        <ConnectButton />
-      </div>
+      {userAddress ? (
+        <div>
+          <ConnectButton />
+        </div>
+      ) : (
+        <div className={style.headerButtonContainer}>
+          <p>Login by connecting your wallet &nbsp;</p>
+          <div className={style.connectButtonContainer}>
+            <ConnectButton />
+          </div>
+        </div>
+      )}
+      {userAddress ? (
+        <div className={style.headerButtonContainer}>
+          <button className={style.headerButton}>For Sale</button>
+          <button className={style.headerButton}>List Car</button>
+        </div>
+      ) : (
+        <></>
+      )}
+
       <div>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
           target="_blank"
           rel="noopener noreferrer"
         >
-          By{" "}
-          <Image
-            src="/vercel.svg"
-            alt="Vercel Logo"
-            className={styles.vercelLogo}
-            width={100}
-            height={24}
-            priority
-          />
+          <h2>Petrol Motor Group</h2>
         </a>
       </div>
     </div>
