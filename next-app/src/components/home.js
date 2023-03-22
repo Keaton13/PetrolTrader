@@ -66,6 +66,9 @@ export default function Home() {
 
         {userAddress ? (
           <div className={styles.center}>
+            <div className={style.container}>
+
+            </div>
             {content}
           </div>
         ) : (
