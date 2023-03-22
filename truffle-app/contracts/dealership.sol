@@ -29,20 +29,9 @@ contract Dealership {
         require(msg.sender == inspector, "Only inspector can call this method");
         _;
     }
-    modifier onlyLender() {
-        require(msg.sender == lender, "Only lender can call this function");
-        _;
-    }
-    modifier hasFunds(uint256 _price, uint256 _balance) {
-        require(_price == _balance, "Must have funds to call this function");
-        _;
-    }
 
     mapping (uint256 => bool) public isListed;
     mapping (uint256 => uint) public purchaseAmount;
-    mapping (uint256 => uint) public loanAmount;
-    mapping (uint256 => uint) public downPayment;
-    mapping (uint256 => bool) public isLoan;
     mapping (uint256 => address) public buyer;
     mapping (uint256 => address) public seller;
     mapping (uint256 => bool) public inspectionPassed;
@@ -58,7 +47,6 @@ contract Dealership {
         lender = _lender;
     }
 
-
     function listCar(uint256 _nftID, uint256 _listPrice) public payable iOwn(_nftID) {
         seller[_nftID] = msg.sender;
         IERC721(nftAddress).transferFrom(msg.sender, address(this), _nftID);
@@ -68,23 +56,22 @@ contract Dealership {
         purchaseAmount[_nftID] = _listPrice;
     }   
 
-    function buyCar(bool _isLoan, uint256 _nftID) public payable {
-        if(_isLoan == true) {
-            finalizeLoan(_nftID);
-        }
+    function buyCar(uint256 _nftID) public payable {
+        require(msg.value >= purchaseAmount[_nftID], "Insufficient payment");
         buyer[_nftID] = msg.sender;
     }
 
-    function finalizeLoan(uint256 _nftID) public {
-        downPayment[_nftID] = (purchaseAmount[_nftID] * 20) / 100;
-        loanAmount[_nftID] = purchaseAmount[_nftID] * 80 / 100;
-        depositDownPayment(_nftID);
-    }
-        function depositDownPayment(uint256 _nftID) public payable onlyBuyer(_nftID) {
-        require(msg.value >= downPayment[_nftID], "Insufficient down payment");
-        (bool success,) = payable(seller[_nftID]).call{value: msg.value}("");
-        require(success, "Failed to transfer down payment to seller");
-    }
+    // function finalizeLoan(uint256 _nftID) public {
+    //     downPayment[_nftID] = (purchaseAmount[_nftID] * 20) / 100;
+    //     loanAmount[_nftID] = purchaseAmount[_nftID] * 80 / 100;
+    //     depositDownPayment(_nftID);
+    // }
+
+    // function depositDownPayment(uint256 _nftID) public payable onlyBuyer(_nftID) {
+    //     require(msg.value >= downPayment[_nftID], "Insufficient down payment");
+    //     (bool success,) = payable(seller[_nftID]).call{value: msg.value}("");
+    //     require(success, "Failed to transfer down payment to seller");
+    // }
 
     function updatedInspectionStatus(uint256 _nftID, bool _passed) public onlyInspector {
         inspectionPassed[_nftID] = _passed;
@@ -97,27 +84,21 @@ contract Dealership {
     function finalizeSale(uint256 _nftID) public {
         require(inspectionPassed[_nftID], "Car has not passed inspection");
         require(approval[_nftID][buyer[_nftID]], "Buyer has not approved the sale");
-        require(approval[_nftID][lender], "Lender has not approved the sale");
-        if(isLoan[_nftID] == true){
-            require(address(this).balance >= loanAmount[_nftID], "Insufficient funds to cover the purchase amount");
-            isListed[_nftID] = false;
-            (bool success,) = payable(lender).call{value: loanAmount[_nftID]}("");
-            require(success, "Failed to transfer funds to seller");
-            IERC721(nftAddress).transferFrom(address(this), buyer[_nftID], _nftID);
+        require(approval[_nftID][seller[_nftID]]);
+        require(approval[_nftID][lender]);
+        require(address(this).balance >= purchaseAmount[_nftID], "Insufficient funds to cover the purchase amount");
 
-        } else {
-            require(address(this).balance >= purchaseAmount[_nftID], "Insufficient funds to cover the purchase amount");
-            isListed[_nftID] = false;
-            (bool success,) = payable(seller[_nftID]).call{value: purchaseAmount[_nftID]}("");
-            require(success, "Failed to transfer funds to seller");
-            IERC721(nftAddress).transferFrom(address(this), buyer[_nftID], _nftID);
+        isListed[_nftID] = false;
 
-        }
+        (bool success,) = payable(seller[_nftID]).call{value: purchaseAmount[_nftID]}("");
+        require(success, "Failed to transfer funds to seller");
+
+        IERC721(nftAddress).transferFrom(address(this), buyer[_nftID], _nftID);
     }
 
     receive() external payable {}
 
     function getBalance() public view returns (uint256) {
-        return address(this).balance;
+        return (address(this).balance);
     }
 }
