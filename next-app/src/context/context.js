@@ -6,6 +6,7 @@ export const AppContext = createContext()
 
 export const AppProvider = ({ children }) => {
     const [userAddress, setUserAddress] = useState('')
+    const [page, setPage] = useState('')
 
     const { address } = useAccount()
 
@@ -19,9 +20,13 @@ export const AppProvider = ({ children }) => {
     
       }, [address])
 
+      // const setHomeDisplay = (display) => {
+      //   setPage(display);
+      // }
+
 
     return (
-        <AppContext.Provider value={{ userAddress }}>
+        <AppContext.Provider value={{ userAddress, page, setPage }}>
           {children}
         </AppContext.Provider>
       )
