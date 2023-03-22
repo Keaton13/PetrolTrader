@@ -37,7 +37,7 @@ contract Dealership {
         require(_price == _balance, "Must have funds to call this function");
         _;
     }
-    
+
     mapping (uint256 => bool) public isListed;
     mapping (uint256 => uint) public purchaseAmount;
     mapping (uint256 => uint) public loanAmount;
@@ -56,5 +56,28 @@ contract Dealership {
         nftAddress = _nftAddress;
         inspector = _inspector;
         lender = _lender;
+    }
+
+
+    function listCar(uint256 _nftID, uint256 _listPrice) public payable iOwn(_nftID) {
+        seller[_nftID] = msg.sender;
+        IERC721(nftAddress).transferFrom(msg.sender, address(this), _nftID);
+        // downPayment[_nftID] = (_listPrice * 20) / 100;
+        // loanAmount[_nftID] = _listPrice * 80 / 100;
+        isListed[_nftID] = true;
+        purchaseAmount[_nftID] = _listPrice;
+    }   
+
+    function buyCar(bool _isLoan, uint256 _nftID) public payable {
+        if(_isLoan == true) {
+            finalizeLoan(_nftID);
+        }
+        buyer[_nftID] = msg.sender;
+    }
+
+    function finalizeLoan(uint256 _nftID) public {
+        downPayment[_nftID] = (purchaseAmount[_nftID] * 20) / 100;
+        loanAmount[_nftID] = purchaseAmount[_nftID] * 80 / 100;
+        depositDownPayment(_nftID);
     }
 }
