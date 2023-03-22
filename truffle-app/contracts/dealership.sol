@@ -80,4 +80,44 @@ contract Dealership {
         loanAmount[_nftID] = purchaseAmount[_nftID] * 80 / 100;
         depositDownPayment(_nftID);
     }
+        function depositDownPayment(uint256 _nftID) public payable onlyBuyer(_nftID) {
+        require(msg.value >= downPayment[_nftID], "Insufficient down payment");
+        (bool success,) = payable(seller[_nftID]).call{value: msg.value}("");
+        require(success, "Failed to transfer down payment to seller");
+    }
+
+    function updatedInspectionStatus(uint256 _nftID, bool _passed) public onlyInspector {
+        inspectionPassed[_nftID] = _passed;
+    }
+
+    function approveSale(uint256 _nftID) public {
+        approval[_nftID][msg.sender] = true;
+    }
+
+    function finalizeSale(uint256 _nftID) public {
+        require(inspectionPassed[_nftID], "Car has not passed inspection");
+        require(approval[_nftID][buyer[_nftID]], "Buyer has not approved the sale");
+        require(approval[_nftID][lender], "Lender has not approved the sale");
+        if(isLoan[_nftID] == true){
+            require(address(this).balance >= loanAmount[_nftID], "Insufficient funds to cover the purchase amount");
+            isListed[_nftID] = false;
+            (bool success,) = payable(lender).call{value: loanAmount[_nftID]}("");
+            require(success, "Failed to transfer funds to seller");
+            IERC721(nftAddress).transferFrom(address(this), buyer[_nftID], _nftID);
+
+        } else {
+            require(address(this).balance >= purchaseAmount[_nftID], "Insufficient funds to cover the purchase amount");
+            isListed[_nftID] = false;
+            (bool success,) = payable(seller[_nftID]).call{value: purchaseAmount[_nftID]}("");
+            require(success, "Failed to transfer funds to seller");
+            IERC721(nftAddress).transferFrom(address(this), buyer[_nftID], _nftID);
+
+        }
+    }
+
+    receive() external payable {}
+
+    function getBalance() public view returns (uint256) {
+        return address(this).balance;
+    }
 }
