@@ -10,7 +10,7 @@ const style = {
   headerButton: "w-40",
 };
 const header = () => {
-  const { userAddress } = useAppContext();
+  const { userAddress, setPage } = useAppContext();
 
   return (
     <div className={styles.description}>
@@ -28,8 +28,8 @@ const header = () => {
       )}
       {userAddress ? (
         <div className={style.headerButtonContainer}>
-          <button className={style.headerButton}>For Sale</button>
-          <button className={style.headerButton}>List Car</button>
+          <button className={style.headerButton} onClick={() => setPage('Buy')}>For Sale</button>
+          <button className={style.headerButton} onClick={() => setPage('List')}>List Car</button>
         </div>
       ) : (
         <></>
