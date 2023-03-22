@@ -37,5 +37,24 @@ contract Dealership {
         require(_price == _balance, "Must have funds to call this function");
         _;
     }
+    
+    mapping (uint256 => bool) public isListed;
+    mapping (uint256 => uint) public purchaseAmount;
+    mapping (uint256 => uint) public loanAmount;
+    mapping (uint256 => uint) public downPayment;
+    mapping (uint256 => bool) public isLoan;
+    mapping (uint256 => address) public buyer;
+    mapping (uint256 => address) public seller;
+    mapping (uint256 => bool) public inspectionPassed;
+    mapping(uint256 => mapping(address => bool)) public approval;
 
+    constructor(
+        address _nftAddress,
+        address _inspector,
+        address _lender
+        ) {
+        nftAddress = _nftAddress;
+        inspector = _inspector;
+        lender = _lender;
+    }
 }
