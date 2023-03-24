@@ -1,4 +1,5 @@
 import React from "react";
+import Card from './card';
 
 const style = {
   container: {
@@ -24,9 +25,7 @@ const buy = () => {
     <div className={style.container}>
       <h1 className={style.title}>Marketplace</h1>
       <div className={style.container}>
-        <div className={style.grid}>
-          
-        </div>
+
       </div>
     </div>
   );
