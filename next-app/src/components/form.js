@@ -26,7 +26,7 @@ export default function Form() {
       <form onSubmit={handleSubmit}>
         <div className={style.inputGroup}>
           <div>
-            <label classname={style.label} htmlFor="manufacturer">
+            <label className={style.label} htmlFor="manufacturer">
               Manufacturer:
             </label>
           </div>
@@ -43,7 +43,7 @@ export default function Form() {
         </div>
         <div className={style.inputGroup}>
           <div>
-            <label classname={style.label} htmlFor="model">
+            <label className={style.label} htmlFor="model">
               Model:
             </label>
           </div>
@@ -61,7 +61,7 @@ export default function Form() {
         <div className={style.inputGroup}>
           <div>
             {" "}
-            <label classname={style.label} htmlFor="mileage">
+            <label className={style.label} htmlFor="mileage">
               Mileage:
             </label>
           </div>
@@ -80,7 +80,7 @@ export default function Form() {
         <div className={style.inputGroup}>
           <div>
             {" "}
-            <label classname={style.label} htmlFor="condition">
+            <label className={style.label} htmlFor="condition">
               Condition (1-10):
             </label>
           </div>
@@ -101,7 +101,7 @@ export default function Form() {
         <div className={style.inputGroup}>
           <div>
             {" "}
-            <label classname={style.label} htmlFor="price">
+            <label className={style.label} htmlFor="price">
               Price:
             </label>
           </div>
