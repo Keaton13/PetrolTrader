@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@moralisweb3/common-evm-utils": "^2.18.0",
     "@rainbow-me/rainbowkit": "^0.12.1",
     "ethers": "^5.7.2",
+    "moralis": "^2.18.0",
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
