@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useAppContext } from "../context/context";
 
 const style = {
   container: "flex flex-row items-center justify-center",
   inputGroup: "pb-4",
-  input: "w-100 h-8 rounded-lg bg-white min-w-full",
+  input: "w-100 h-8 rounded-lg bg-white text-black min-w-full",
   label: "mr-2 font-bold",
   button:
     "bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline",
@@ -16,9 +17,23 @@ export default function Form() {
   const [condition, setCondition] = useState("");
   const [price, setPrice] = useState("");
 
+  const { uploadToIpfs } = useAppContext();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // Do something with the form data, like submit to a server or update state
+
+    const formData = {
+        manufacturer,
+        model,
+        mileage,
+        condition,
+        price,
+    }
+
+    const metaDataString = JSON.stringify(formData);
+    uploadToIpfs(metaDataString);
+    console.log(metaDataString);
   };
 
   return (
@@ -38,6 +53,7 @@ export default function Form() {
               value={manufacturer}
               onChange={(event) => setManufacturer(event.target.value)}
               required
+              pattern="[a-zA-Z0-9\s,]*"
             />
           </div>
         </div>
@@ -55,6 +71,7 @@ export default function Form() {
               value={model}
               onChange={(event) => setModel(event.target.value)}
               required
+              pattern="[a-zA-Z0-9\s,]*"
             />
           </div>
         </div>
@@ -68,13 +85,14 @@ export default function Form() {
           <div>
             {" "}
             <input
-              type="number"
+              type="text"
               id="mileage"
               className={style.input}
               value={mileage}
               onChange={(event) => setMileage(event.target.value)}
               required
-            />
+              step="any"
+              />
           </div>
         </div>
         <div className={style.inputGroup}>
@@ -95,7 +113,7 @@ export default function Form() {
               value={condition}
               onChange={(event) => setCondition(event.target.value)}
               required
-            />
+              />
           </div>
         </div>
         <div className={style.inputGroup}>
@@ -108,13 +126,14 @@ export default function Form() {
           <div>
             {" "}
             <input
-              type="number"
+              type="text"
               id="price"
               className={style.input}
               value={price}
               onChange={(event) => setPrice(event.target.value)}
               required
-            />
+              step="any"
+              />
           </div>
         </div>
         <button type="submit" className={style.button}>
