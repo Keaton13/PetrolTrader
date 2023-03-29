@@ -20,7 +20,7 @@ export const AppProvider = ({ children }) => {
   }, [address]);
 
   const uploadToIpfs = async (metaData) => {
-
+    console.log(metaData)
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -36,9 +36,9 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  // const setHomeDisplay = (display) => {
-  //   setPage(display);
-  // }
+  const setHomeDisplay = (display) => {
+    setPage(display);
+  }
 
   return (
     <AppContext.Provider value={{ userAddress, page, setPage, uploadToIpfs }}>

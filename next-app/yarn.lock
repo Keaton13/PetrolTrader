@@ -1302,6 +1302,11 @@
     "@typescript-eslint/types" "5.55.0"
     "eslint-visitor-keys" "^3.3.0"
 
+"@upload-io/upload-api-client-upload-js@^2.15.0":
+  "integrity" "sha512-UGqT4wxCDhTTKnTLvqtKCyPJSswA2z6/Z6/sMakWGdJBBuwCHcOyXgoWafbPILrgWp3oMMQjnTfwwMBmR0O54w=="
+  "resolved" "https://registry.npmjs.org/@upload-io/upload-api-client-upload-js/-/upload-api-client-upload-js-2.15.0.tgz"
+  "version" "2.15.0"
+
 "@vanilla-extract/css@^1.0.0", "@vanilla-extract/css@1.9.1":
   "integrity" "sha512-pu2SFiff5jRhPwvGoj8cM5l/qIyLvigOmy22ss5DGjwV5pJYezRjDLxWumi2luIwioMWvh9EozCjyfH8nq+7fQ=="
   "resolved" "https://registry.npmjs.org/@vanilla-extract/css/-/css-1.9.1.tgz"
@@ -2252,6 +2257,11 @@
   dependencies:
     "inherits" "^2.0.1"
     "safe-buffer" "^5.0.1"
+
+"classnames@^2.2.6":
+  "integrity" "sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw=="
+  "resolved" "https://registry.npmjs.org/classnames/-/classnames-2.3.2.tgz"
+  "version" "2.3.2"
 
 "client-only@0.0.1":
   "integrity" "sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA=="
@@ -4542,7 +4552,7 @@
     "picocolors" "^1.0.0"
     "source-map-js" "^1.0.2"
 
-"preact@^10.12.0", "preact@^10.5.9":
+"preact@^10.12.0", "preact@^10.5.9", "preact@^10.6.5":
   "integrity" "sha512-KyoXVDU5OqTpG9LXlB3+y639JAGzl8JSBXLn1J9HTSB3gbKcuInga7bZnXLlxmK94ntTs1EFeZp0lrja2AuBYQ=="
   "resolved" "https://registry.npmjs.org/preact/-/preact-10.13.1.tgz"
   "version" "10.13.1"
@@ -4556,6 +4566,11 @@
   "integrity" "sha512-du4wfLyj4yCZq1VupnVSZmRsPJsNuxoDQFdCFHLaYiEbFBD7QE0a+I4D7hOxrVnh78QE/YipFAj9lXHiXocV+Q=="
   "resolved" "https://registry.npmjs.org/process-warning/-/process-warning-1.0.0.tgz"
   "version" "1.0.0"
+
+"progress-smoother@^1.4.0":
+  "integrity" "sha512-ctIG/KF/3DQ1zQHMWbXjcnicggTsEzZEA2JEnJNrPtK88tmqN9cfQf01yfLWGCBF93R5XN1EUe/z/IV5NKrmCw=="
+  "resolved" "https://registry.npmjs.org/progress-smoother/-/progress-smoother-1.4.0.tgz"
+  "version" "1.4.0"
 
 "prop-types@^15.8.1":
   "integrity" "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg=="
@@ -4686,7 +4701,14 @@
     "invariant" "^2.2.4"
     "tslib" "^2.0.0"
 
-"react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^18.2.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>=16.8", "react@>=17", "react@>=17.0.0", "react@18.2.0":
+"react-uploader@^3.13.0":
+  "integrity" "sha512-DAkeApJWfyU+7UZA/Pmr4mWf4jhUWoEmkwu1/6VoHL5hS4i6TisRQzHyiZf4YiMS01oAS22Q+Bj4UWv+LEx4gw=="
+  "resolved" "https://registry.npmjs.org/react-uploader/-/react-uploader-3.13.0.tgz"
+  "version" "3.13.0"
+  dependencies:
+    "uploader" "^3.12.0"
+
+"react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^18.2.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>=16.3.0", "react@>=16.8", "react@>=17", "react@>=17.0.0", "react@18.2.0":
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   "version" "18.2.0"
@@ -5325,6 +5347,23 @@
   dependencies:
     "escalade" "^3.1.1"
     "picocolors" "^1.0.0"
+
+"upload-js@^2.11.0":
+  "integrity" "sha512-q6IkwFLA3kL1MbBMvzCbJC0EHjMgjJ399f5QH3Up5rkoVjYXZxTKRgyJQeRT1HpqPQ3gCJdvZuL/Cv1LjBRGMg=="
+  "resolved" "https://registry.npmjs.org/upload-js/-/upload-js-2.11.2.tgz"
+  "version" "2.11.2"
+  dependencies:
+    "@upload-io/upload-api-client-upload-js" "^2.15.0"
+    "progress-smoother" "^1.4.0"
+
+"uploader@^3.12.0":
+  "integrity" "sha512-7ZYuX4ltWAy3WtiMyrYNp1IXZP2ILS/6evCCS5AjTeBnLgOw47K1vCjWBT1bvvXK4s/awulVLaCEFwxCXQzVSA=="
+  "resolved" "https://registry.npmjs.org/uploader/-/uploader-3.13.0.tgz"
+  "version" "3.13.0"
+  dependencies:
+    "classnames" "^2.2.6"
+    "preact" "^10.6.5"
+    "upload-js" "^2.11.0"
 
 "uri-js@^4.2.2":
   "integrity" "sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg=="
