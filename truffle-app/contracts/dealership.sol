@@ -15,7 +15,6 @@ interface IERC721 {
 contract Dealership {
     address public nftAddress;
     address public inspector;
-    address public lender;
 
     modifier onlyBuyer(uint256 _nftID) {
         require(msg.sender == buyer[_nftID], "Only buyer can call this method");
@@ -39,12 +38,10 @@ contract Dealership {
 
     constructor(
         address _nftAddress,
-        address _inspector,
-        address _lender
+        address _inspector
         ) {
         nftAddress = _nftAddress;
         inspector = _inspector;
-        lender = _lender;
     }
 
     function listCar(uint256 _nftID, uint256 _listPrice) public payable iOwn(_nftID) {
@@ -85,7 +82,6 @@ contract Dealership {
         require(inspectionPassed[_nftID], "Car has not passed inspection");
         require(approval[_nftID][buyer[_nftID]], "Buyer has not approved the sale");
         require(approval[_nftID][seller[_nftID]]);
-        require(approval[_nftID][lender]);
         require(address(this).balance >= purchaseAmount[_nftID], "Insufficient funds to cover the purchase amount");
 
         isListed[_nftID] = false;
