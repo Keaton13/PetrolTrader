@@ -69,7 +69,6 @@ export default function Form() {
 
     const metaDataString = JSON.stringify(metaData);
     uploadToIpfs(metaDataString);
-    console.log(metaDataString);
   };
 
   return (

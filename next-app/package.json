@@ -18,7 +18,8 @@
     "react-dom": "18.2.0",
     "react-uploader": "^3.13.0",
     "truncate-eth-address": "^1.0.2",
-    "wagmi": "^0.12.1"
+    "wagmi": "^0.12.1",
+    "web3": "^1.9.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
