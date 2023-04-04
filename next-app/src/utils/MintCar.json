@@ -18958,12 +18958,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x4946338b1597Ee7739a1404b48d32FD145d22389",
-      "transactionHash": "0x1430a9883b82672814371ada812dc1ac85e74aae034cd42606db1a70c10e4c34"
+      "address": "0x731A4e8F83b50c0109856b644C97e2E2c63bBe2d",
+      "transactionHash": "0xbd060b5b44c7d1a7c2db9dbe0aef3193b6a320dd56003ce872a47ee4ae9a88b3"
     }
   },
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-04-03T17:53:20.735Z",
+  "updatedAt": "2023-04-04T00:22:45.997Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "Set & change owner",

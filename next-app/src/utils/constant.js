@@ -2,8 +2,8 @@ import Web3 from "web3";
 import mintAbi from "./MintCar.json";
 import dealerAbi from "./Dealership.json";
 
-const mintAddress = "0x4946338b1597Ee7739a1404b48d32FD145d22389";
-const dealerAddress = "0xa0A38d44b819f84F16C16De88aFE31D1f5Af0cc6";
+const mintAddress = "0x731A4e8F83b50c0109856b644C97e2E2c63bBe2d";
+const dealerAddress = "0x092051abFE00Dc75bCBb63146c9DD39fF9623E93";
 
 export const createContract = () => {
   const { ethereum } = window;
