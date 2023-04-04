@@ -1,4 +1,5 @@
 import React from "react";
+import { useAppContext } from "../context/context";
 import Card from "./card";
 
 const style = {
@@ -13,6 +14,8 @@ const style = {
 };
 
 const Buy = () => {
+  const { nfts } = useAppContext();
+
   const cards = Array.from({ length: 10 }, (_, index) => (
     <Card key={index} />
   ));
@@ -21,9 +24,9 @@ const Buy = () => {
     <div className={style.container}>
       <h1 className={style.title}>Marketplace</h1>
       <div className={style.grid}>
-        {cards.map((card, index) => (
+        {nfts.map((card, index) => (
           <div key={index}>
-            {card}
+            <Card key={index} card={card[0]}/>
           </div>
         ))}
       </div>
