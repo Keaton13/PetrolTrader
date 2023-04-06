@@ -47,8 +47,6 @@ contract Dealership {
     function listCar(uint256 _nftID, uint256 _listPrice) public payable iOwn(_nftID) {
         seller[_nftID] = msg.sender;
         IERC721(nftAddress).transferFrom(msg.sender, address(this), _nftID);
-        // downPayment[_nftID] = (_listPrice * 20) / 100;
-        // loanAmount[_nftID] = _listPrice * 80 / 100;
         isListed[_nftID] = true;
         purchaseAmount[_nftID] = _listPrice;
     }   
@@ -57,18 +55,6 @@ contract Dealership {
         require(msg.value >= purchaseAmount[_nftID], "Insufficient payment");
         buyer[_nftID] = msg.sender;
     }
-
-    // function finalizeLoan(uint256 _nftID) public {
-    //     downPayment[_nftID] = (purchaseAmount[_nftID] * 20) / 100;
-    //     loanAmount[_nftID] = purchaseAmount[_nftID] * 80 / 100;
-    //     depositDownPayment(_nftID);
-    // }
-
-    // function depositDownPayment(uint256 _nftID) public payable onlyBuyer(_nftID) {
-    //     require(msg.value >= downPayment[_nftID], "Insufficient down payment");
-    //     (bool success,) = payable(seller[_nftID]).call{value: msg.value}("");
-    //     require(success, "Failed to transfer down payment to seller");
-    // }
 
     function updatedInspectionStatus(uint256 _nftID, bool _passed) public onlyInspector {
         inspectionPassed[_nftID] = _passed;
