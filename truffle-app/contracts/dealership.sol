@@ -16,11 +16,19 @@ contract Dealership {
     address public nftAddress;
     address public inspector;
 
+struct TokenData {
+    uint256 nftID;
+    address owner;
+}
+
+TokenData[] public listedTokens;
+
+
     modifier onlyBuyer(uint256 _nftID) {
         require(msg.sender == buyer[_nftID], "Only buyer can call this method");
         _;
     }
-    modifier iOwn(uint256 tokenId) {
+    modifier onlyOwner(uint256 tokenId) {
         require(IERC721(nftAddress).ownerOf(tokenId) == msg.sender, "You are not the owner of this NFT.");
         _;
     }
@@ -44,9 +52,11 @@ contract Dealership {
         inspector = _inspector;
     }
 
-    function listCar(uint256 _nftID, uint256 _listPrice) public payable iOwn(_nftID) {
+    function listCar(uint256 _nftID, uint256 _listPrice) public payable onlyOwner(_nftID) {
         seller[_nftID] = msg.sender;
         IERC721(nftAddress).transferFrom(msg.sender, address(this), _nftID);
+        TokenData memory newToken = TokenData(_nftID, msg.sender);
+        listedTokens.push(newToken);
         isListed[_nftID] = true;
         purchaseAmount[_nftID] = _listPrice;
     }   
@@ -64,17 +74,44 @@ contract Dealership {
         approval[_nftID][msg.sender] = true;
     }
 
+    function getAllTokens() public view returns (uint256[] memory) {
+        uint256[] memory tokenIds = new uint256[](listedTokens.length);
+        for (uint256 i = 0; i < listedTokens.length; i++) {
+            tokenIds[i] = listedTokens[i].nftID ;
+        }
+        return tokenIds;
+    }
+
+    function removeToken(uint256 tokenId) public {
+    // find the index of the TokenData struct with the given token ID
+        uint256 index = 0;
+        bool found = false;
+        for (uint256 i = 0; i < listedTokens.length; i++) {
+        if (listedTokens[i].nftID == tokenId) {
+            index = i;
+            found = true;
+            break;
+        }
+    }
+    require(found, "Token ID not found in tokenList");
+
+    // remove the TokenData struct from the tokenList array
+        if (index < listedTokens.length - 1) {
+            listedTokens[index] = listedTokens[listedTokens.length - 1];
+        }
+        listedTokens.pop();
+    }   
+
     function finalizeSale(uint256 _nftID) public {
         require(inspectionPassed[_nftID], "Car has not passed inspection");
         require(approval[_nftID][buyer[_nftID]], "Buyer has not approved the sale");
-        require(approval[_nftID][seller[_nftID]]);
         require(address(this).balance >= purchaseAmount[_nftID], "Insufficient funds to cover the purchase amount");
 
         isListed[_nftID] = false;
 
         (bool success,) = payable(seller[_nftID]).call{value: purchaseAmount[_nftID]}("");
         require(success, "Failed to transfer funds to seller");
-
+        removeToken(_nftID);
         IERC721(nftAddress).transferFrom(address(this), buyer[_nftID], _nftID);
     }
 

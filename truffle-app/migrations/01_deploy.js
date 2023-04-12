@@ -3,7 +3,8 @@ const Mint = artifacts.require("MintCar");
 
 module.exports = function(deployer) {
   deployer.deploy(Mint).then(() => {
-    return deployer.deploy(Dealership,"0xd2646dd1dC1f6fF4c64273aae040fA0a78d3540f", Mint.address);
+    console.log(Mint.address)
+    return deployer.deploy(Dealership,Mint.address,"0x84125D450F39d06C3Df31161D6d7de5c5977F472");
   }).then(() => {
     console.log("Contracts deployed successfully!");
   });

@@ -16,17 +16,13 @@ const style = {
 const Buy = () => {
   const { nfts } = useAppContext();
 
-  const cards = Array.from({ length: 10 }, (_, index) => (
-    <Card key={index} />
-  ));
-
   return (
     <div className={style.container}>
       <h1 className={style.title}>Marketplace</h1>
       <div className={style.grid}>
         {nfts.map((card, index) => (
           <div key={index}>
-            <Card key={index} card={card[0]}/>
+            <Card key={index} card={card}/>
           </div>
         ))}
       </div>
