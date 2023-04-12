@@ -13,7 +13,7 @@ export const AppProvider = ({ children }) => {
   const [dealershipContract, setDealershipContract] = useState();
   const [mintContract, setMintContract] = useState();
   const [nfts, setNfts] = useState();
-  const provider = new Web3.providers.HttpProvider('http://localhost:7545');
+  const provider = new Web3.providers.HttpProvider("http://localhost:7545");
 
   const web3 = new Web3(provider);
 
@@ -59,14 +59,15 @@ export const AppProvider = ({ children }) => {
         .approve(dealershipContract._address, newItemId)
         .send({ from: address, gas: 3000000 });
 
-
-      const receipt = await web3.eth.getTransactionReceipt(approvalTransaction.transactionHash);
+      const receipt = await web3.eth.getTransactionReceipt(
+        approvalTransaction.transactionHash
+      );
 
       if (receipt.status === true) {
-        list(newItemId, nftMetaData)
-        console.log('Transaction confirmed!');
+        list(newItemId, nftMetaData);
+        console.log("Transaction confirmed!");
       } else {
-        console.error('Transaction failed!');
+        console.error("Transaction failed!");
       }
     } catch (error) {
       console.error(error);
@@ -76,11 +77,17 @@ export const AppProvider = ({ children }) => {
   const list = async (newItemId, nftMetaData) => {
     console.log(newItemId);
     console.log(nftMetaData);
-    const isListed = await dealershipContract.methods.isListed(newItemId).call();
-    console.log(isListed)
-    // const transaction = await dealershipContract.methods
-    //   .listCar(47, web3.utils.toWei("10", "ether"))
-    //   .send({ from: address, gas: 3000000 });
+    const isListed = await dealershipContract.methods
+      .isListed(newItemId)
+      .call();
+    console.log(isListed);
+    try {
+      const transaction = await dealershipContract.methods
+        .listCar(newItemId, "5")
+        .send({ from: address, gas: 3000000 });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const loadBlockchainData = async () => {
@@ -91,24 +98,48 @@ export const AppProvider = ({ children }) => {
     setDealershipContract(dealershipContract);
     setMintContract(mintContract);
 
-    console.log(dealershipContract.methods)
+    console.log(dealershipContract.methods);
 
-    const totalSupply = await mintContract.methods.totalSupply().call();
+    const totalSupply = await dealershipContract.methods.getAllTokens().call();
 
     const nfts = [];
 
     for (let i = 1; i <= totalSupply; i++) {
+      let nftResponse;
+      let inspectionResponse;
+
       const uri = await mintContract.methods.tokenURI(i).call();
+
       await axios
         .get(uri)
         .then((response) => {
-          nfts.push([response.data, i]);
+          nftResponse = response;
         })
         .catch((error) => {
           console.error(error);
         });
+
+      try {
+        const status = await dealershipContract.methods
+          .inspectionPassed(i)
+          .call();
+        inspectionResponse = status;
+      } catch (error) {
+        console.error(error);
+      }
+      nfts.push([nftResponse.data, inspectionResponse, i]);
     }
     setNfts(nfts);
+  };
+
+  const setInspectionStatus = async (nftId, status) => {
+    try {
+      const inspectionStatus = await dealershipContract.methods
+        .setInspectionStatus(nftId, status)
+        .send({ from: address, gas: 3000000 });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -116,6 +147,7 @@ export const AppProvider = ({ children }) => {
       value={{
         userAddress,
         page,
+        dealershipContract,
         setPage,
         uploadToIpfs,
         loadBlockchainData,
