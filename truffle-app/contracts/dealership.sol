@@ -13,15 +13,22 @@ interface IERC721 {
 }
 
 contract Dealership {
+    event CarListed(uint256 indexed nftID, address indexed seller, uint256 listPrice);
+    event CarBought(uint256 indexed nftID, address indexed buyer, uint256 indexed purchaseAmount);
+    event CarSold(uint256 indexed nftID, address indexed buyer, address indexed seller, uint256 purchaseAmount);
+    event CarInspected(uint indexed nftID, bool passed, address inspector);
+    event SaleApproved(uint indexed nftID, address indexed approver);
+
     address public nftAddress;
     address public inspector;
 
-struct TokenData {
-    uint256 nftID;
-    address owner;
-}
+    struct TokenData {
+        uint256 nftID;
+        address owner;
+    }
 
-TokenData[] public listedTokens;
+    TokenData[] public listedTokens;
+    TokenData[] public soldTokens;
 
 
     modifier onlyBuyer(uint256 _nftID) {
@@ -59,31 +66,47 @@ TokenData[] public listedTokens;
         listedTokens.push(newToken);
         isListed[_nftID] = true;
         purchaseAmount[_nftID] = _listPrice;
+
+        emit CarListed(_nftID, msg.sender, _listPrice);
     }   
 
     function buyCar(uint256 _nftID) public payable {
         require(msg.value >= purchaseAmount[_nftID], "Insufficient payment");
         buyer[_nftID] = msg.sender;
+
+        emit CarBought(_nftID, msg.sender, purchaseAmount[_nftID]);
     }
 
     function updatedInspectionStatus(uint256 _nftID, bool _passed) public onlyInspector {
         inspectionPassed[_nftID] = _passed;
+
+        emit CarInspected(_nftID, _passed, msg.sender);
     }
 
     function approveSale(uint256 _nftID) public {
         approval[_nftID][msg.sender] = true;
+
+        emit SaleApproved(_nftID, msg.sender);
     }
 
     function getAllTokens() public view returns (uint256[] memory) {
         uint256[] memory tokenIds = new uint256[](listedTokens.length);
         for (uint256 i = 0; i < listedTokens.length; i++) {
-            tokenIds[i] = listedTokens[i].nftID ;
+            tokenIds[i] = listedTokens[i].nftID;
         }
         return tokenIds;
     }
 
+    function getAllSoldTokens() public view returns (uint256[] memory) {
+        uint256[] memory tokenIds = new uint256[](soldTokens.length);
+        for (uint256 i = 0; i < soldTokens.length; i++) {
+            tokenIds[i] = soldTokens[i].nftID;
+        }
+        return tokenIds;
+
+    }
     function removeToken(uint256 tokenId) public {
-    // find the index of the TokenData struct with the given token ID
+        // find the index of the TokenData struct with the given token ID
         uint256 index = 0;
         bool found = false;
         for (uint256 i = 0; i < listedTokens.length; i++) {
@@ -94,8 +117,7 @@ TokenData[] public listedTokens;
         }
     }
     require(found, "Token ID not found in tokenList");
-
-    // remove the TokenData struct from the tokenList array
+        // remove the TokenData struct from the tokenList array
         if (index < listedTokens.length - 1) {
             listedTokens[index] = listedTokens[listedTokens.length - 1];
         }
@@ -103,9 +125,10 @@ TokenData[] public listedTokens;
     }   
 
     function finalizeSale(uint256 _nftID) public {
+        require(address(this).balance >= purchaseAmount[_nftID], "Insufficient funds to cover the purchase amount");
         require(inspectionPassed[_nftID], "Car has not passed inspection");
         require(approval[_nftID][buyer[_nftID]], "Buyer has not approved the sale");
-        require(address(this).balance >= purchaseAmount[_nftID], "Insufficient funds to cover the purchase amount");
+        require(approval[_nftID][seller[_nftID]], "Seller has not approved the sale");
 
         isListed[_nftID] = false;
 
@@ -113,6 +136,11 @@ TokenData[] public listedTokens;
         require(success, "Failed to transfer funds to seller");
         removeToken(_nftID);
         IERC721(nftAddress).transferFrom(address(this), buyer[_nftID], _nftID);
+
+        TokenData memory newToken = TokenData(_nftID, buyer[_nftID]);
+        soldTokens.push(newToken);
+
+        emit CarSold(_nftID, buyer[_nftID], seller[_nftID], purchaseAmount[_nftID]);
     }
 
     receive() external payable {}
