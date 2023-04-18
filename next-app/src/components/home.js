@@ -9,13 +9,14 @@ import Buy from "./buy"
 import { useAppContext } from "../context/context";
 
 export default function Home() {
-  const { userAddress, page, loadBlockchainData } = useAppContext();
+  const { userAddress, page, events, loadBlockchainData } = useAppContext();
 
   useEffect(() => {
     if(userAddress){
       loadBlockchainData();
     }
-  }, [userAddress]);
+  }, [userAddress, events]);
+  
   useEffect(() => {
     console.log(page);
   }, [page]);

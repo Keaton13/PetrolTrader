@@ -19,6 +19,8 @@ const Card = (props) => {
     approveSale,
     finalizeSale,
     approvalStatus,
+    loadBlockchainData,
+    events
   } = useAppContext();
 
   const [button, setButton] = useState(null);
@@ -37,12 +39,12 @@ const Card = (props) => {
     setButton();
     if (address === sellerAddress) {
       seller();
-    } else if (address === "0x84125D450F39d06C3Df31161D6d7de5c5977F472") {
+    } else if (address === "0xbc57BAEd94eFac14c1F4172748313ef3DCf75c30") {
       inspector();
     } else {
       buyer();
     }
-  }, [address]);
+  }, [address, events]);
 
   const seller = async () => {
     console.log(status);
@@ -82,7 +84,7 @@ const Card = (props) => {
   };
 
   const inspector = async () => {
-    if (address == "0x84125D450F39d06C3Df31161D6d7de5c5977F472") {
+    if (address == "0xbc57BAEd94eFac14c1F4172748313ef3DCf75c30") {
       if (buyerAddress === "0x0000000000000000000000000000000000000000") {
         setButton(<h2>Waiting for buyer</h2>);
       } else if (inspectionStatus === false) {
@@ -95,20 +97,6 @@ const Card = (props) => {
       }
     }
   };
-
-  // const fetchData = async () => {
-  //   if (inspectionStatus == false && address == "0x84125D450F39d06C3Df31161D6d7de5c5977F472") {
-  //     setButton(<button onClick={(() => setInspectionStatus(tokenId, true))}>Approve Inspection</button>);
-  //   } else if (inspectionStatus == true && address == sellerAddress) {
-  //     setButton(<button onClick={(() => finalizeSale(tokenId))}>Finalize Sale</button>);
-  //   } else if (address == sellerAddress || address == buyerAddress) {
-  //     setButton(<button onClick={(() => approveSale(tokenId,address))}>Approve Sale</button>);
-  //   } else if (buyerAddress != "0x0000000000000000000000000000000000000000") {
-  //     setButton(<h2>Pending sale</h2>);
-  //   } else {
-  //     setButton(<button onClick={(() => buyCar(tokenId, price))}>Buy</button>);
-  //   }
-  // };
 
   return (
     <div className={styles.card}>

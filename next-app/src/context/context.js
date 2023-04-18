@@ -13,6 +13,7 @@ export const AppProvider = ({ children }) => {
   const [dealershipContract, setDealershipContract] = useState();
   const [mintContract, setMintContract] = useState();
   const [nfts, setNfts] = useState();
+  const [events, setEvent] = useState();
   const provider = new Web3.providers.HttpProvider("http://localhost:7545");
 
   const web3 = new Web3(provider);
@@ -26,6 +27,82 @@ export const AppProvider = ({ children }) => {
       setUserAddress(truncateEthAddress(address));
     }
   }, [address]);
+
+  useEffect(() => {
+    const contracts = createContract();
+
+    const dealershipContract = contracts.dealerContract;
+    const mintContract = contracts.mintContract;
+    setDealershipContract(dealershipContract);
+    setMintContract(mintContract);
+
+    const carListedEvent = dealershipContract.events.CarListed(
+      {},
+      (error, event) => {
+        if (error) {
+          console.error(error);
+        } else {
+          console.log(event.returnValues);
+          setEvent(event.returnValues);
+        }
+      }
+    );
+
+    const carBoughtEvent = dealershipContract.events.CarBought(
+      {},
+      (error, event) => {
+        if (error) {
+          console.error(error);
+        } else {
+          console.log(event.returnValues);
+          setEvent(event.returnValues);
+        }
+      }
+    );
+
+    const carSoldEvent = dealershipContract.events.CarSold(
+      {},
+      (error, event) => {
+        if (error) {
+          console.error(error);
+        } else {
+          console.log(event.returnValues);
+          setEvent(event.returnValues);
+        }
+      }
+    );
+
+    const carInspectedEvent = dealershipContract.events.CarInspected(
+      {},
+      (error, event) => {
+        if (error) {
+          console.error(error);
+        } else {
+          console.log(event.returnValues);
+          setEvent(event.returnValues);
+        }
+      }
+    );
+
+    const saleApprovedEvent = dealershipContract.events.SaleApproved(
+      {},
+      (error, event) => {
+        if (error) {
+          console.error(error);
+        } else {
+          console.log(event.returnValues);
+          setEvent(event.returnValues);
+        }
+      }
+    );
+    return () => {
+      carListedEvent.unsubscribe();
+      carBoughtEvent.unsubscribe();
+      carSoldEvent.unsubscribe();
+      carInspectedEvent.unsubscribe();
+      saleApprovedEvent.unsubscribe();
+    };
+  }, []);
 
   const uploadToIpfs = async (metaData) => {
     try {
@@ -103,13 +180,6 @@ export const AppProvider = ({ children }) => {
   };
 
   const loadBlockchainData = async () => {
-    const contracts = createContract();
-
-    const dealershipContract = contracts.dealerContract;
-    const mintContract = contracts.mintContract;
-    setDealershipContract(dealershipContract);
-    setMintContract(mintContract);
-
     const totalSupply = await dealershipContract.methods.getAllTokens().call();
 
     const nfts = [];
@@ -179,10 +249,20 @@ export const AppProvider = ({ children }) => {
         sellerAddress,
         buyerAddress,
         totalSupply[i],
-        approvalStatus
+        approvalStatus,
       ]);
     }
     setNfts(nfts);
+  };
+
+  const removeCarToken = async (nftId) => {
+    try {
+      const removalStatus = await dealershipContract.methods
+        .removeToken(nftId)
+        .send({ from: address, gas: 3000000 });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const setInspectionStatus = async (nftId, status) => {
@@ -258,6 +338,7 @@ export const AppProvider = ({ children }) => {
         approvalStatus,
         finalizeSale,
         nfts,
+        events
       }}
     >
       {children}

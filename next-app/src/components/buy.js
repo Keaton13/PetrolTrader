@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAppContext } from "../context/context";
 import Card from "./card";
 
@@ -13,8 +13,13 @@ const style = {
   card: "bg-white rounded-lg shadow-lg p-6",
 };
 
+
 const Buy = () => {
   const { nfts } = useAppContext();
+
+  useEffect(() => {
+    console.log(nfts);
+  }, [nfts])
 
   return (
     <div className={style.container}>
