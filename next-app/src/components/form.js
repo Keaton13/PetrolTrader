@@ -53,22 +53,25 @@ export default function Form() {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Do something with the form data, like submit to a server or update state
-
-    const metaData = {
-      images: images,
-      attributes: {
-        manufacturer,
-        model,
-        year,
-        mileage,
-        condition,
-        price,
-        description,
-      },
-    };
-
-    const metaDataString = JSON.stringify(metaData);
-    uploadToIpfs(metaDataString);
+    if(images[0]) {
+      const metaData = {
+        images: images,
+        attributes: {
+          manufacturer,
+          model,
+          year,
+          mileage,
+          condition,
+          price,
+          description,
+        },
+      };
+  
+      const metaDataString = JSON.stringify(metaData);
+      uploadToIpfs(metaDataString);
+    } else {
+      alert("Error need to publish image")
+    }
   };
 
   return (
