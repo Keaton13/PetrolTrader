@@ -4,6 +4,7 @@ import Card from "./card";
 
 const style = {
   container: "flex flex-col items-center justify-center w-full",
+  cardContainer: "",
   grid: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-6 w-full",
   title: "text-4xl font-bold text-center text-white",
   carWrapper: "mt-8",
