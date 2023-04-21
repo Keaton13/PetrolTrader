@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useAppContext } from "../context/context";
 import Card from "./card";
-import Modal from "./modal";
 
 const style = {
   container: "flex flex-col items-center justify-center w-full",
@@ -15,42 +14,25 @@ const style = {
   card: "bg-white rounded-lg shadow-lg p-6",
 };
 
-const Buy = () => {
-  const { nfts } = useAppContext();
-  const [showModal, setShowModal] = useState(false);
-  const [card, setCard] = useState();
+
+const Sold = () => {
+  const { soldNfts } = useAppContext();
 
   useEffect(() => {
-  }, [showModal]);
-
-  const handleClose = (card) => {
-    setShowModal(false);
-    setCard();
-  };
-
-  const handleOpen = (card) => {
-    setCard(card);
-    setShowModal(true);
-  }
+  }, [soldNfts])
 
   return (
     <div className={style.container}>
       <h1 className={style.title}>Marketplace</h1>
       <div className={style.grid}>
-        {nfts.map((card, index) => (
+        {soldNfts.map((card, index) => (
           <div key={index}>
-            <Card key={index} card={card} handleOpen={handleOpen} />
+            <Card key={index} card={card}/>
           </div>
         ))}
       </div>
-      {showModal && (
-          <Modal onClose={handleClose} card={card}>
-            <h2>Hello, World!</h2>
-            <p>This is my modal dialog.</p>
-          </Modal>
-        )}
     </div>
   );
 };
 
-export default Buy;
+export default Sold;

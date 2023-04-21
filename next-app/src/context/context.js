@@ -13,6 +13,7 @@ export const AppProvider = ({ children }) => {
   const [dealershipContract, setDealershipContract] = useState();
   const [mintContract, setMintContract] = useState();
   const [nfts, setNfts] = useState();
+  const [soldNfts, setSoldNfts] = useState();
   const [events, setEvent] = useState();
   const provider = new Web3.providers.HttpProvider("http://localhost:7545");
 
@@ -42,7 +43,6 @@ export const AppProvider = ({ children }) => {
         if (error) {
           console.error(error);
         } else {
-          console.log(event.returnValues);
           setEvent(event.returnValues);
         }
       }
@@ -54,7 +54,6 @@ export const AppProvider = ({ children }) => {
         if (error) {
           console.error(error);
         } else {
-          console.log(event.returnValues);
           setEvent(event.returnValues);
         }
       }
@@ -66,7 +65,6 @@ export const AppProvider = ({ children }) => {
         if (error) {
           console.error(error);
         } else {
-          console.log(event.returnValues);
           setEvent(event.returnValues);
         }
       }
@@ -78,7 +76,6 @@ export const AppProvider = ({ children }) => {
         if (error) {
           console.error(error);
         } else {
-          console.log(event.returnValues);
           setEvent(event.returnValues);
         }
       }
@@ -90,7 +87,6 @@ export const AppProvider = ({ children }) => {
         if (error) {
           console.error(error);
         } else {
-          console.log(event.returnValues);
           setEvent(event.returnValues);
         }
       }
@@ -179,7 +175,7 @@ export const AppProvider = ({ children }) => {
     return Number(roundedEtherAmount);
   };
 
-  const loadBlockchainData = async () => {
+  const loadNftData = async () => {
     const totalSupply = await dealershipContract.methods.getAllTokens().call();
 
     const nfts = [];
@@ -252,8 +248,46 @@ export const AppProvider = ({ children }) => {
         approvalStatus,
       ]);
     }
+
     setNfts(nfts);
+
   };
+
+  const loadSoldNftData = async () => {
+    const soldSupply = await dealershipContract.methods.getAllSoldTokens().call();
+
+    const soldNfts = [];
+
+    for (let i = 0; i < soldSupply.length -1; i++) {
+      let soldNftResponse;
+      let nftSoldPrice;
+
+      const soldUri = await mintContract.methods.tokenURI(soldSupply[i]).call();
+
+      await axios
+      .get(soldUri)
+      .then((response) => {
+        soldNftResponse = response;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+      try {
+        nftSoldPrice = await dealershipContract.methods
+          .purchaseAmount(soldSupply[i])
+          .call();
+      } catch (error) {
+        console.error(error);
+      }
+      let status = {
+        sold: true
+      }
+      soldNfts.push([soldNftResponse.data, nftSoldPrice])
+
+    }
+    setSoldNfts(soldNfts);
+  }
 
   const removeCarToken = async (nftId) => {
     try {
@@ -331,13 +365,15 @@ export const AppProvider = ({ children }) => {
         dealershipContract,
         setPage,
         uploadToIpfs,
-        loadBlockchainData,
+        loadNftData,
+        loadSoldNftData,
         setInspectionStatus,
         buyCar,
         approveSale,
         approvalStatus,
         finalizeSale,
         nfts,
+        soldNfts,
         events
       }}
     >
