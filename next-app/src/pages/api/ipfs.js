@@ -8,8 +8,7 @@ const Moralis = require("moralis").default;
 export default function handler(req, res) {
   const ipfs = async () => {
     let metaData = req.body;
-    console.log(metaData);
-
+    
     const abi = [
       {
         path: "test.json",

@@ -6,14 +6,16 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import List from "../components/list";
 import Buy from "./buy"
+import Sold from './sold'
 import { useAppContext } from "../context/context";
 
 export default function Home() {
-  const { userAddress, page, setPage, events, loadBlockchainData } = useAppContext();
+  const { userAddress, page, setPage, events, loadNftData, loadSoldNftData } = useAppContext();
 
   useEffect(() => {
     if(userAddress){
-      loadBlockchainData();
+      loadNftData();
+      loadSoldNftData();
     }
     if(events){
       if(events.listPrice){
@@ -22,9 +24,9 @@ export default function Home() {
     }
   }, [userAddress, events]);
 
-  useEffect(() => {
-    console.log(page);
-  }, [page]);
+  // useEffect(() => {
+  //   console.log(page);
+  // }, [page]);
 
   const style = {
     container: "flex flex-col items-center justify-center",
@@ -40,6 +42,8 @@ export default function Home() {
     content = <List />
   } else if (page == "Buy") {
     content = <Buy />;
+  } else if (page == "Sold") {
+    content = <Sold />
   } else {
     content = (
       <div className={style.container}>

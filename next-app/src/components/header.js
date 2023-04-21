@@ -30,6 +30,7 @@ const header = () => {
         <div className={style.headerButtonContainer}>
           <button className={style.headerButton} onClick={() => setPage('Buy')}>For Sale</button>
           <button className={style.headerButton} onClick={() => setPage('List')}>List Car</button>
+          <button className={style.headerButton} onClick={() => setPage('Sold')}>Sold</button>
         </div>
       ) : (
         <></>
