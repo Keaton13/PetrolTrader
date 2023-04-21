@@ -8,8 +8,8 @@ const ImageSlider = (props) => {
     console.log(images);
 
     const styles = {
-        image: "max-h-[16rem] m-auto object-contain w-100",
-        imageContainer: "flex items-center min-h-[16rem] max-h-[16rem]",
+        image: "m-auto m-h-100 object-contain w-100 rounded-t-lg",
+        imageContainer: "flex items-center",
     }
 
     const settings = {

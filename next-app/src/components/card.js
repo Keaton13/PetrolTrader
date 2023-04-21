@@ -5,14 +5,18 @@ import ImageSlider from "../components/slider";
 
 const styles = {
   card: "bg-white rounded-lg flex flex-col m-1",
-  bottomCard: "h-8",
-  imageContainer: "flex items-center min-h-[16rem] max-h-[16rem]",
+  bottomCard: "h-20",
+  imageContainer: "flex items-center",
   image: "max-h-[16rem] m-auto",
-  textContainer: "text-black flex",
-  buttonContainer: "h-20 text-black flex items-center justify-center",
-  textItems: "p-1",
+  textContainer: "text-black flex p-1",
+  buttonContainer: "h-20 text-black flex items-center pl-6",
+  textItems: "p-1 pl-4",
+  textItemsBottom: "p-2 pb-4 text-slate-500 m-auto text-xs border-t border-gray-400",
+  textItemsBigText: "p-1 pl-4 pr-2 text-2xl",
+  borderLeft: "p-1 pl-2 text-2xl border-l border-gray-400",
   button:
     "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
+  blueLink: 'text-blue-500 font-bold'
 };
 
 const Card = (props) => {
@@ -38,6 +42,14 @@ const Card = (props) => {
   let tokenId = props.card[5];
   let status = props.card[6];
 
+  let stringPrice = parseFloat(card.attributes.price);
+  stringPrice = stringPrice.toLocaleString();
+
+  let milage = parseInt(card.attributes.mileage, "10");
+  milage = Math.ceil(milage / 1000);
+
+  console.log(card);
+
   useEffect(() => {
     setButton();
     if (inspectionStatus !== undefined) {
@@ -52,7 +64,6 @@ const Card = (props) => {
       sold();
     }
   }, [address, props]);
-  
 
   const seller = async () => {
     if (buyerAddress === "0x0000000000000000000000000000000000000000") {
@@ -130,33 +141,41 @@ const Card = (props) => {
   };
 
   const sold = async () => {
-    setButton(
-      <button
-        className={styles.button}
-      >
-        Sold
-      </button>
-    );
+    setButton(<button className={styles.button}>Sold</button>);
   };
 
   return (
     <div className={styles.card}>
       {card.images ? <ImageSlider images={card.images} /> : <></>}
-      <div className={styles.bottomCard} onClick={(() => {props.handleOpen(card)})}>
+      <div
+        className={styles.bottomCard}
+        onClick={() => {
+          props.handleOpen(card);
+        }}
+      >
         <div className={styles.textContainer}>
-          <h2 className={styles.textItems}>{card.attributes.year}</h2>
-          <h2 className={styles.textItems}>{card.attributes.manufacturer}</h2>
-          <h2 className={styles.textItems}>{card.attributes.model}</h2>
-          <h2 className={styles.textItems}>${card.attributes.price}</h2>
+          <a className={styles.blueLink}>
+            {" "}
+            <h2 className={styles.textItems}>
+              {card.attributes.year} {card.attributes.manufacturer}{" "}
+              {card.attributes.model}
+            </h2>
+          </a>
+        </div>
+        <div className={styles.textContainer}>
+          <h2 className={styles.textItemsBigText}>${stringPrice}</h2>
+          <h2 className={styles.borderLeft}>{milage}K mi</h2>
         </div>
         <div className={styles.textContainer}>
           <h2 className={styles.textItems}></h2>
         </div>
-        <div className={styles.textContainer}>
-          {/* <p>{card.attributes.description}</p> */}
-        </div>
       </div>
       <div className={styles.buttonContainer}>{button}</div>
+      <div className={styles.textContainer}>
+        <p className={styles.textItemsBottom}>
+          All purchases and sales require an inspection *
+        </p>
+      </div>
     </div>
   );
 };
