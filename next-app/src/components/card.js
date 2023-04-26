@@ -41,6 +41,7 @@ const Card = (props) => {
   let buyerAddress = props.card[4];
   let tokenId = props.card[5];
   let status = props.card[6];
+  
 
   let stringPrice = parseFloat(card.attributes.price);
   stringPrice = stringPrice.toLocaleString();
@@ -48,7 +49,7 @@ const Card = (props) => {
   let milage = parseInt(card.attributes.mileage, "10");
   milage = Math.ceil(milage / 1000);
 
-  console.log(card);
+  // console.log(card);
 
   useEffect(() => {
     setButton();
@@ -150,7 +151,7 @@ const Card = (props) => {
       <div
         className={styles.bottomCard}
         onClick={() => {
-          props.handleOpen(card);
+          props.handleOpen(card,button);
         }}
       >
         <div className={styles.textContainer}>

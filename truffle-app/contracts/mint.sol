@@ -17,12 +17,13 @@ contract MintCar is ERC721URIStorage {
 
     constructor() ERC721("Car Dealership", "DLER") {}
 
-    function mint(string memory tokenURI) public returns (uint256) {
+    function mint(string memory tokenURI, address approvedContract) public returns (uint256) {
         _tokenIds.increment();
 
         uint256 newItemId = _tokenIds.current();
         _mint(msg.sender, newItemId);
         _setTokenURI(newItemId, tokenURI);
+        approve(approvedContract, newItemId);
 
         return newItemId;
     }

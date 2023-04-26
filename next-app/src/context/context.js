@@ -123,17 +123,17 @@ export const AppProvider = ({ children }) => {
 
     try {
       const transaction = await mintContract.methods
-        .mint(tokenURI)
+        .mint(tokenURI, dealershipContract._address)
         .send({ from: address, gas: 3000000 });
 
       newItemId = transaction.events.Transfer.returnValues.tokenId;
 
-      const approvalTransaction = await mintContract.methods
-        .approve(dealershipContract._address, newItemId)
-        .send({ from: address, gas: 3000000 });
+      // const approvalTransaction = await mintContract.methods
+      //   .approve(dealershipContract._address, newItemId)
+      //   .send({ from: address, gas: 3000000 });
 
       const receipt = await web3.eth.getTransactionReceipt(
-        approvalTransaction.transactionHash
+        transaction.transactionHash
       );
 
       if (receipt.status === true) {

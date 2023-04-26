@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "../context/context";
+import { useAccount } from "wagmi";
 import Card from "./card";
 import Modal from "./modal";
 
@@ -19,17 +20,22 @@ const Buy = () => {
   const { nfts } = useAppContext();
   const [showModal, setShowModal] = useState(false);
   const [card, setCard] = useState();
+  const [button, setButton] = useState();
+
+  const { address } = useAccount();
 
   useEffect(() => {
-  }, [showModal]);
+    handleClose();
+  }, [address]);
 
   const handleClose = (card) => {
     setShowModal(false);
     setCard();
   };
 
-  const handleOpen = (card) => {
+  const handleOpen = (card, button) => {
     setCard(card);
+    setButton(button);
     setShowModal(true);
   }
 
@@ -44,7 +50,7 @@ const Buy = () => {
         ))}
       </div>
       {showModal && (
-          <Modal onClose={handleClose} card={card}>
+          <Modal onClose={handleClose} card={card} button={button}>
             <h2>Hello, World!</h2>
             <p>This is my modal dialog.</p>
           </Modal>
