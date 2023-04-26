@@ -8,7 +8,7 @@ const ImageSlider = (props) => {
     console.log(images);
 
     const styles = {
-        image: "m-auto m-h-100 object-contain w-100 rounded-t-lg",
+        image: "m-auto m-h-100 object-contain w-100 rounded-t-lg max-h-[16rem]",
         imageContainer: "flex items-center",
     }
 
@@ -18,7 +18,15 @@ const ImageSlider = (props) => {
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
+      arrows: true
     };
+    // const settings = {
+    //     dots: true,
+    //     infinite: true,
+    //     speed: 500,
+    //     slidesToShow: 3,
+    //     slidesToScroll: 3
+    //   };
     return (
       <Slider {...settings}>
         {images.map((image) => (

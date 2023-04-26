@@ -38,9 +38,17 @@ export default function Form() {
   const [model, setModel] = useState("");
   const [year, setYear] = useState("");
   const [mileage, setMileage] = useState("");
-  const [condition, setCondition] = useState("");
   const [price, setPrice] = useState("");
+  const [vin, setVin] = useState("");
   const [description, setDescription] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [titleStatus, setTitleStatus] = useState("");
+  const [cylinders, setCylinders] = useState("");
+  const [drive, setDrive] = useState("");
+  const [fuel, setFuel] = useState("");
+  const [transmission, setTransmission] = useState("");
+  const [type, setType] = useState("");
   const [images, setImages] = useState([]);
   const [imageModalStatus, setImageModalStatus] = useState(true);
 
@@ -61,9 +69,17 @@ export default function Form() {
           model,
           year,
           mileage,
-          condition,
           price,
+          vin, 
           description,
+          city,
+          state,
+          titleStatus,
+          cylinders,
+          drive,
+          fuel,
+          transmission,
+          type,
         },
       };
   
@@ -111,7 +127,6 @@ export default function Form() {
                   value={model}
                   onChange={(event) => setModel(event.target.value)}
                   required
-                  pattern="[a-zA-Z0-9\s,]*"
                 />
               </div>
             </div>
@@ -156,20 +171,57 @@ export default function Form() {
             <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="condition">
-                  Condition (1-10):
+                <label className={style.label} htmlFor="mileage">
+                  Vin Number:
                 </label>
               </div>
               <div>
                 {" "}
                 <input
-                  type="number"
+                  type="text"
+                  id="mileage"
+                  className={style.input}
+                  value={vin}
+                  onChange={(event) => setVin(event.target.value)}
+                  required
+                  step="any"
+                />
+              </div>
+            </div>
+            <div className={style.inputGroup}>
+              <div>
+                {" "}
+                <label className={style.label} htmlFor="condition">
+                  City:
+                </label>
+              </div>
+              <div>
+                {" "}
+                <input
+                  type="text"
                   id="condition"
                   className={style.input}
-                  min="1"
-                  max="10"
-                  value={condition}
-                  onChange={(event) => setCondition(event.target.value)}
+                  value={city}
+                  onChange={(event) => setCity(event.target.value)}
+                  required
+                />
+              </div>
+            </div>
+            <div className={style.inputGroup}>
+              <div>
+                {" "}
+                <label className={style.label} htmlFor="condition">
+                  State:
+                </label>
+              </div>
+              <div>
+                {" "}
+                <input
+                  type="text"
+                  id="condition"
+                  className={style.input}
+                  value={state}
+                  onChange={(event) => setState(event.target.value)}
                   required
                 />
               </div>
@@ -189,6 +241,26 @@ export default function Form() {
                   className={style.input}
                   value={price}
                   onChange={(event) => setPrice(event.target.value)}
+                  required
+                  step="any"
+                />
+              </div>
+            </div>
+            <div className={style.inputGroup}>
+              <div>
+                {" "}
+                <label className={style.label} htmlFor="price">
+                  Title Status:
+                </label>
+              </div>
+              <div>
+                {" "}
+                <input
+                  type="text"
+                  id="price"
+                  className={style.input}
+                  value={titleStatus}
+                  onChange={(event) => setTitleStatus(event.target.value)}
                   required
                   step="any"
                 />
@@ -216,14 +288,112 @@ export default function Form() {
                       setImages(imageUrls); // Set the array to component state
                       setImageModalStatus(false);
                     }}
-                    width="600px"
-                    height="375px"
+                    width="40rem"
+                    height="16rem"
                   />
                 ) : (
                   <div>
                     <h1>Upload Complete!</h1>
                   </div>
                 )}
+              </div>
+            </div>
+            <div className={style.inputGroup}>
+              <div>
+                {" "}
+                <label className={style.label} htmlFor="price">
+                  Cylinders:
+                </label>
+              </div>
+              <div>
+                {" "}
+                <input
+                  type="text"
+                  id="price"
+                  className={style.input}
+                  value={cylinders}
+                  onChange={(event) => setCylinders(event.target.value)}
+                  required
+                  step="any"
+                />
+              </div>
+            </div>            <div className={style.inputGroup}>
+              <div>
+                {" "}
+                <label className={style.label} htmlFor="price">
+                  Drive:
+                </label>
+              </div>
+              <div>
+                {" "}
+                <input
+                  type="text"
+                  id="price"
+                  className={style.input}
+                  value={drive}
+                  onChange={(event) => setDrive(event.target.value)}
+                  required
+                  step="any"
+                />
+              </div>
+            </div>            <div className={style.inputGroup}>
+              <div>
+                {" "}
+                <label className={style.label} htmlFor="price">
+                  Fuel:
+                </label>
+              </div>
+              <div>
+                {" "}
+                <input
+                  type="text"
+                  id="price"
+                  className={style.input}
+                  value={fuel}
+                  onChange={(event) => setFuel(event.target.value)}
+                  required
+                  step="any"
+                />
+              </div>
+            </div>
+            <div className={style.inputGroup}>
+              <div>
+                {" "}
+                <label className={style.label} htmlFor="price">
+                  Transmission:
+                </label>
+              </div>
+              <div>
+                {" "}
+                <input
+                  type="text"
+                  id="price"
+                  className={style.input}
+                  value={transmission}
+                  onChange={(event) => setTransmission(event.target.value)}
+                  required
+                  step="any"
+                />
+              </div>
+            </div>
+            <div className={style.inputGroup}>
+              <div>
+                {" "}
+                <label className={style.label} htmlFor="price">
+                  Type:
+                </label>
+              </div>
+              <div>
+                {" "}
+                <input
+                  type="text"
+                  id="price"
+                  className={style.input}
+                  value={type}
+                  onChange={(event) => setType(event.target.value)}
+                  required
+                  step="any"
+                />
               </div>
             </div>
           </div>

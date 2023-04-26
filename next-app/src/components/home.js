@@ -34,7 +34,7 @@ export default function Home() {
     carWrapper: "mt-8",
     car: "animate-bounce w-16 h-16 text-white",
     text: "mt-4 mb-5 text-white text-2xl text-center",
-    textLogo: "text-white text-2xl",
+    textLogo: "text-white text-lg",
   };
 
   let content = null;
@@ -87,7 +87,7 @@ export default function Home() {
             <div style={styles.container}>
               <h1 className={style.text}>Petrol Trader</h1>
               <div className={styles.thirteen}>
-                <h2 className={style.textLogo}>V0.1</h2>
+                <h5 className={style.textLogo}>V0.1</h5>
               </div>
             </div>
           </div>
