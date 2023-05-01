@@ -18,10 +18,13 @@ contract Dealership {
     event CarSold(uint256 indexed nftID, address indexed buyer, address indexed seller, uint256 purchaseAmount);
     event CarInspected(uint indexed nftID, bool passed, address inspector);
     event SaleApproved(uint indexed nftID, address indexed approver);
+    event InspectorAdded(address indexed inspector);
+    event InspectorRemoved(address indexed inspector);
 
     address public nftAddress;
-    address public inspector;
-
+    address public contractOwner;
+    address[] private inspectors;
+    
     struct TokenData {
         uint256 nftID;
         address owner;
@@ -32,15 +35,28 @@ contract Dealership {
 
 
     modifier onlyBuyer(uint256 _nftID) {
-        require(msg.sender == buyer[_nftID], "Only buyer can call this method");
+        require(msg.sender == buyer[_nftID], "Only buyer can call this method.");
         _;
     }
     modifier onlyOwner(uint256 tokenId) {
         require(IERC721(nftAddress).ownerOf(tokenId) == msg.sender, "You are not the owner of this NFT.");
         _;
     }
+
+    modifier onlyContractOwner() {
+        require(msg.sender == contractOwner, "Only contract owner can call this function.");
+        _;
+    }
+
     modifier onlyInspector() {
-        require(msg.sender == inspector, "Only inspector can call this method");
+        bool isInArray = false;
+        for (uint i = 0; i < inspectors.length; i++) {
+            if (msg.sender == inspectors[i]) {
+                isInArray = true;
+                break;
+            }
+        }
+        require(isInArray, "Only inspectors can call this method");
         _;
     }
 
@@ -52,11 +68,10 @@ contract Dealership {
     mapping(uint256 => mapping(address => bool)) public approval;
 
     constructor(
-        address _nftAddress,
-        address _inspector
-        ) {
+        address _nftAddress
+    ) {
         nftAddress = _nftAddress;
-        inspector = _inspector;
+        contractOwner = msg.sender;
     }
 
     function listCar(uint256 _nftID, uint256 _listPrice) public payable onlyOwner(_nftID) {
@@ -81,6 +96,23 @@ contract Dealership {
         inspectionPassed[_nftID] = _passed;
 
         emit CarInspected(_nftID, _passed, msg.sender);
+    }
+
+    function addInspector(address _inspector) public onlyContractOwner{
+        inspectors.push(_inspector);
+        emit InspectorAdded(_inspector);
+    }
+
+    function removeInspector(address _inspector) public onlyContractOwner {
+        for (uint256 i = 0; i < inspectors.length; i++) {
+            if (inspectors[i] == _inspector) {
+                inspectors[i] = inspectors[inspectors.length - 1];
+                inspectors.pop();
+                emit InspectorRemoved(_inspector);
+                return;
+            }
+        }
+        revert("Inspector not found");
     }
 
     function approveSale(uint256 _nftID) public {

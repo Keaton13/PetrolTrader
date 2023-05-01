@@ -24,10 +24,6 @@ export default function Home() {
     }
   }, [userAddress, events]);
 
-  // useEffect(() => {
-  //   console.log(page);
-  // }, [page]);
-
   const style = {
     container: "flex flex-col items-center justify-center",
     title: "text-4xl font-bold text-center text-white",
