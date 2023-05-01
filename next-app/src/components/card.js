@@ -49,14 +49,12 @@ const Card = (props) => {
   let milage = parseInt(card.attributes.mileage, "10");
   milage = Math.ceil(milage / 1000);
 
-  // console.log(card);
-
   useEffect(() => {
     setButton();
     if (inspectionStatus !== undefined) {
       if (address === sellerAddress) {
         seller();
-      } else if (address === "0xbc57BAEd94eFac14c1F4172748313ef3DCf75c30") {
+      } else if (address === "0xE3f5e9c3ac47446B9e143Aa9fc17912326DC69B8") {
         inspector();
       } else {
         buyer();
@@ -121,7 +119,7 @@ const Card = (props) => {
   };
 
   const inspector = async () => {
-    if (address == "0xbc57BAEd94eFac14c1F4172748313ef3DCf75c30") {
+    if (address == "0xE3f5e9c3ac47446B9e143Aa9fc17912326DC69B8") {
       if (buyerAddress === "0x0000000000000000000000000000000000000000") {
         setButton(<h2 className={styles.button}>Waiting for buyer</h2>);
       } else if (inspectionStatus === false) {

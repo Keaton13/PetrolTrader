@@ -1,15 +1,18 @@
 import React from "react";
 import styles from "@/styles/Home.module.css";
 import { Inter } from "next/font/google";
+import { useAppContext } from "../context/context";
 
 const inter = Inter({ subsets: ["latin"] });
 
 
 const footer = () => {
+  const { userAddress, setPage } = useAppContext();
+
   return (
     <div className={styles.grid}>
       <a
-        href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+        onClick={() => setPage('Buy')}
         className={styles.card}
         target="_blank"
         rel="noopener noreferrer"
@@ -23,7 +26,7 @@ const footer = () => {
       </a>
 
       <a
-        href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+       onClick={() => setPage('List')}
         className={styles.card}
         target="_blank"
         rel="noopener noreferrer"
@@ -37,16 +40,16 @@ const footer = () => {
       </a>
 
       <a
-        href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+        onClick={() => setPage('Sold')}
         className={styles.card}
         target="_blank"
         rel="noopener noreferrer"
       >
         <h2 className={inter.className}>
-          Inspect <span>-&gt;</span>
+          Sold <span>-&gt;</span>
         </h2>
         <p className={inter.className}>
-          Certified inspectors confirm you are getting what you pay for.
+          See cars recently listed and sold on our application.
         </p>
       </a>
     </div>

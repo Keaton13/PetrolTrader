@@ -54,10 +54,6 @@ export default function Form() {
 
   const { uploadToIpfs } = useAppContext();
 
-  useEffect(() => {
-    console.log(images);
-  }, [images]);
-
   const handleSubmit = (event) => {
     event.preventDefault();
     // Do something with the form data, like submit to a server or update state
@@ -280,9 +276,6 @@ export default function Form() {
                   <UploadDropzone
                     uploader={uploader}
                     options={uploaderOptions}
-                    onUpdate={(files) =>
-                      console.log(files.map((x) => x.fileUrl).join("\n"))
-                    }
                     onComplete={(files) => {
                       const imageUrls = files.map((file) => file.fileUrl); // Save fileUrls in an array
                       setImages(imageUrls); // Set the array to component state

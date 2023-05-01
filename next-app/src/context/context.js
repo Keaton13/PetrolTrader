@@ -15,7 +15,7 @@ export const AppProvider = ({ children }) => {
   const [nfts, setNfts] = useState();
   const [soldNfts, setSoldNfts] = useState();
   const [events, setEvent] = useState();
-  const provider = new Web3.providers.HttpProvider("http://localhost:7545");
+  const provider = new Web3.providers.HttpProvider(`https://goerli.infura.io/v3/${process.env.INFURA_API_KEY}`);
 
   const web3 = new Web3(provider);
 
@@ -24,6 +24,7 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     if (!address) {
       setUserAddress(address);
+
     } else {
       setUserAddress(truncateEthAddress(address));
     }
@@ -31,7 +32,6 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     const contracts = createContract();
-
     const dealershipContract = contracts.dealerContract;
     const mintContract = contracts.mintContract;
     setDealershipContract(dealershipContract);
@@ -51,6 +51,7 @@ export const AppProvider = ({ children }) => {
     const carBoughtEvent = dealershipContract.events.CarBought(
       {},
       (error, event) => {
+        console.log("Event working")
         if (error) {
           console.error(error);
         } else {
@@ -124,7 +125,9 @@ export const AppProvider = ({ children }) => {
     try {
       const transaction = await mintContract.methods
         .mint(tokenURI, dealershipContract._address)
-        .send({ from: address, gas: 3000000 });
+        .send({ from: address, gas: 6000000 });
+
+        console.log(transaction)
 
       newItemId = transaction.events.Transfer.returnValues.tokenId;
 
@@ -135,6 +138,8 @@ export const AppProvider = ({ children }) => {
       const receipt = await web3.eth.getTransactionReceipt(
         transaction.transactionHash
       );
+
+      console.log(receipt);
 
       if (receipt.status === true) {
         list(newItemId, nftMetaData);
@@ -158,11 +163,21 @@ export const AppProvider = ({ children }) => {
     try {
       const transaction = await dealershipContract.methods
         .listCar(newItemId, web3.utils.toWei(String(priceConversion), "ether"))
-        .send({ from: address, gas: 3000000 });
+        .send({ from: address, gas: 6000000 });
     } catch (error) {
       console.error(error);
     }
   };
+
+  const setInspector = async () => {
+    try {
+      const transaction = await dealershipContract.methods
+      .addInspector("0xbc57BAEd94eFac14c1F4172748313ef3DCf75c30")
+      .send({from: address, gas: 6000000})
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const getCurrentEthPrice = async (usdAmount) => {
     const response = await axios.get(
@@ -258,7 +273,7 @@ export const AppProvider = ({ children }) => {
 
     const soldNfts = [];
 
-    for (let i = 0; i < soldSupply.length -1; i++) {
+    for (let i = 0; i <= soldSupply.length -1; i++) {
       let soldNftResponse;
       let nftSoldPrice;
 
@@ -293,7 +308,7 @@ export const AppProvider = ({ children }) => {
     try {
       const removalStatus = await dealershipContract.methods
         .removeToken(nftId)
-        .send({ from: address, gas: 3000000 });
+        .send({ from: address, gas: 5000000 });
     } catch (error) {
       console.error(error);
     }
@@ -303,7 +318,7 @@ export const AppProvider = ({ children }) => {
     try {
       const inspectionStatus = await dealershipContract.methods
         .updatedInspectionStatus(nftId, status)
-        .send({ from: address, gas: 3000000 });
+        .send({ from: address, gas: 5000000 });
     } catch (error) {
       console.error(error);
     }
@@ -313,7 +328,7 @@ export const AppProvider = ({ children }) => {
     try {
       const buy = await dealershipContract.methods
         .buyCar(nftId)
-        .send({ from: address, value: price, gas: 300000 });
+        .send({ from: address, value: price, gas: 5000000 });
     } catch (error) {
       console.error(error);
     }
@@ -323,7 +338,7 @@ export const AppProvider = ({ children }) => {
     try {
       const approve = await dealershipContract.methods
         .approveSale(nftId)
-        .send({ from: address, gas: 300000 });
+        .send({ from: address, gas: 5000000 });
     } catch {
       console.error(error);
     }
@@ -351,7 +366,7 @@ export const AppProvider = ({ children }) => {
     try {
       const finalizeSale = await dealershipContract.methods
         .finalizeSale(nftId)
-        .send({ from: address, gas: 300000 });
+        .send({ from: address, gas: 5000000 });
     } catch (error) {
       console.error(error);
     }
