@@ -8,10 +8,10 @@ const styles = {
   headerText: "text-4xl font-bold",
   modalContent:
     "w-1/2 h-3/4 overflow-auto bg-white text-black rounded-lg object-contain overflow-auto",
-  contentContainer: "items-center justify-center object-contain w-1/2 m-auto",
+  contentContainer: "items-center justify-center object-contain w-3/4 m-auto",
   imageContainer: "flex items-center min-h-[16rem] max-h-[16rem]",
   image: "max-h-[16rem] m-auto object-contain w-100",
-  textContainer: "text-black flex p-1",
+  textContainer: "text-black flex p-1 justify-center",
   descriptionContainer: "justify-center text-black w-3/4 m-auto flex p-5",
   textItemsBigText: "p-1 pl-4 pr-2 text-2xl",
   borderLeft: "p-1 pl-2 text-2xl border-l border-gray-400",
@@ -42,8 +42,6 @@ function Modal(props) {
             <h2 className={styles.headerText}>
               {data.year} {data.manufacturer} {data.model}
             </h2>
-          </div>
-          <div className={styles.textContainer}>
             <h2 className={styles.textItemsBigText}>${stringPrice}</h2>
             <h2 className={styles.borderLeft}>{milage}K mi</h2>
           </div>

@@ -43,7 +43,7 @@ const Buy = () => {
     <div className={style.container}>
       <h1 className={style.title}>Marketplace</h1>
       <div className={style.grid}>
-        {nfts.map((card, index) => (
+        {nfts && nfts.map((card, index) => (
           <div key={index}>
             <Card key={index} card={card} handleOpen={handleOpen} />
           </div>
