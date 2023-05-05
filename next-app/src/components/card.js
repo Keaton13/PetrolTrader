@@ -29,10 +29,10 @@ const Card = (props) => {
     finalizeSale,
     approvalStatus,
     events,
+    showModal
   } = useAppContext();
 
   const [button, setButton] = useState(null);
-  const [showModal, setShowModal] = useState(false);
 
   let card = props.card[0];
   let price = props.card[1];
@@ -149,7 +149,7 @@ const Card = (props) => {
       <div
         className={styles.bottomCard}
         onClick={() => {
-          props.handleOpen(card,button);
+          props.handleOpen(card, button);
         }}
       >
         <div className={styles.textContainer}>

@@ -15,6 +15,8 @@ export const AppProvider = ({ children }) => {
   const [nfts, setNfts] = useState();
   const [soldNfts, setSoldNfts] = useState();
   const [events, setEvent] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const [transactionModalStatus, setTransactionModalStatus] = useState(false);
   const provider = new Web3.providers.HttpProvider(`https://goerli.infura.io/v3/${process.env.INFURA_API_KEY}`);
 
   const web3 = new Web3(provider);
@@ -122,6 +124,8 @@ export const AppProvider = ({ children }) => {
     const nftMetaData = JSON.parse(metaData);
     let newItemId;
 
+    setShowModal(true)
+
     try {
       const transaction = await mintContract.methods
         .mint(tokenURI, dealershipContract._address)
@@ -148,6 +152,7 @@ export const AppProvider = ({ children }) => {
         console.error("Transaction failed!");
       }
     } catch (error) {
+      setShowModal(false)
       console.error(error);
     }
   };
@@ -164,7 +169,15 @@ export const AppProvider = ({ children }) => {
       const transaction = await dealershipContract.methods
         .listCar(newItemId, web3.utils.toWei(String(priceConversion), "ether"))
         .send({ from: address, gas: 6000000 });
+
+        const receipt = await web3.eth.getTransactionReceipt(
+          transaction.transactionHash
+        )
+        if (receipt.status === true) {
+          setShowModal(false)
+        }
     } catch (error) {
+      setShowModal(false);
       console.error(error);
     }
   };
@@ -387,6 +400,7 @@ export const AppProvider = ({ children }) => {
         approveSale,
         approvalStatus,
         finalizeSale,
+        showModal,
         nfts,
         soldNfts,
         events

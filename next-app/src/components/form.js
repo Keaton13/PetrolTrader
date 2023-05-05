@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppContext } from "../context/context";
 import { Uploader } from "uploader";
 import { UploadDropzone } from "react-uploader";
+import Loading from './loading';
 
 // Initialize once (at the start of your app).
 const uploader = Uploader({ apiKey: "public_kW15b8eFsgxw9yiamkzK9CfB8Adr" }); // Your real API key.
@@ -52,7 +53,7 @@ export default function Form() {
   const [images, setImages] = useState([]);
   const [imageModalStatus, setImageModalStatus] = useState(true);
 
-  const { uploadToIpfs } = useAppContext();
+  const { uploadToIpfs, showModal } = useAppContext();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -417,6 +418,12 @@ export default function Form() {
           </div>
         </div>
       </form>
+      {showModal && (
+          <Loading>
+            <h2>Hello, World!</h2>
+            <p>Minting NFT Please Hold</p>
+          </Loading>
+        )}
     </div>
   );
 }
