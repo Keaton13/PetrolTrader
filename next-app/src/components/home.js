@@ -5,24 +5,30 @@ import styles from "@/styles/Home.module.css";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import List from "../components/list";
-import Buy from "./buy"
-import Sold from './sold'
+import Buy from "./buy";
+import Sold from "./sold";
+import Listing from "./lisiting";
 import { useAppContext } from "../context/context";
 
 export default function Home() {
-  const { userAddress, page, setPage, events, loadNftData, loadSoldNftData } = useAppContext();
+  const { userAddress, page, setPage, events, loadNftData, loadSoldNftData } =
+    useAppContext();
 
   useEffect(() => {
-    if(userAddress){
+    if (userAddress) {
       loadNftData();
       loadSoldNftData();
     }
-    if(events){
-      if(events.listPrice){
-        setPage("Buy")
+    if (events) {
+      if (events.listPrice) {
+        setPage("Buy");
       }
     }
   }, [userAddress, events]);
+
+  useEffect(() => {
+    setPage("Buy")
+  }, [userAddress])
 
   const style = {
     container: "flex flex-col items-center justify-center",
@@ -35,11 +41,13 @@ export default function Home() {
 
   let content = null;
   if (page == "List") {
-    content = <List />
+    content = <List />;
   } else if (page == "Buy") {
     content = <Buy />;
   } else if (page == "Sold") {
-    content = <Sold />
+    content = <Sold />;
+  } else if (page == "Listing") {
+    content = <Listing />
   } else {
     content = (
       <div className={style.container}>
@@ -75,9 +83,7 @@ export default function Home() {
         <Header />
 
         {userAddress ? (
-          <div className={styles.center}>
-            {content}
-          </div>
+          <div className={styles.center}>{content}</div>
         ) : (
           <div className={styles.center}>
             <div style={styles.container}>

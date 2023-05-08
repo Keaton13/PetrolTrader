@@ -9,15 +9,19 @@ export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const [userAddress, setUserAddress] = useState();
-  const [page, setPage] = useState("");
+  const [page, setPage] = useState("Listing");
   const [dealershipContract, setDealershipContract] = useState();
   const [mintContract, setMintContract] = useState();
   const [nfts, setNfts] = useState();
   const [soldNfts, setSoldNfts] = useState();
+  const [card, setCard] = useState();
+  const [button, setContextButton] = useState();
   const [events, setEvent] = useState();
   const [showModal, setShowModal] = useState(false);
   const [transactionModalStatus, setTransactionModalStatus] = useState(false);
-  const provider = new Web3.providers.HttpProvider(`https://goerli.infura.io/v3/${process.env.INFURA_API_KEY}`);
+  const provider = new Web3.providers.HttpProvider(
+    `https://goerli.infura.io/v3/${process.env.INFURA_API_KEY}`
+  );
 
   const web3 = new Web3(provider);
 
@@ -26,7 +30,6 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     if (!address) {
       setUserAddress(address);
-
     } else {
       setUserAddress(truncateEthAddress(address));
     }
@@ -53,7 +56,7 @@ export const AppProvider = ({ children }) => {
     const carBoughtEvent = dealershipContract.events.CarBought(
       {},
       (error, event) => {
-        console.log("Event working")
+        console.log("Event working");
         if (error) {
           console.error(error);
         } else {
@@ -124,14 +127,14 @@ export const AppProvider = ({ children }) => {
     const nftMetaData = JSON.parse(metaData);
     let newItemId;
 
-    setShowModal(true)
+    setTransactionModalStatus(true);
 
     try {
       const transaction = await mintContract.methods
         .mint(tokenURI, dealershipContract._address)
         .send({ from: address, gas: 6000000 });
 
-        console.log(transaction)
+      console.log(transaction);
 
       newItemId = transaction.events.Transfer.returnValues.tokenId;
 
@@ -152,7 +155,7 @@ export const AppProvider = ({ children }) => {
         console.error("Transaction failed!");
       }
     } catch (error) {
-      setShowModal(false)
+      setTransactionModalStatus(false);
       console.error(error);
     }
   };
@@ -170,14 +173,14 @@ export const AppProvider = ({ children }) => {
         .listCar(newItemId, web3.utils.toWei(String(priceConversion), "ether"))
         .send({ from: address, gas: 6000000 });
 
-        const receipt = await web3.eth.getTransactionReceipt(
-          transaction.transactionHash
-        )
-        if (receipt.status === true) {
-          setShowModal(false)
-        }
+      const receipt = await web3.eth.getTransactionReceipt(
+        transaction.transactionHash
+      );
+      if (receipt.status === true) {
+        setTransactionModalStatus(false);
+      }
     } catch (error) {
-      setShowModal(false);
+      setTransactionModalStatus(false);
       console.error(error);
     }
   };
@@ -185,12 +188,12 @@ export const AppProvider = ({ children }) => {
   const setInspector = async () => {
     try {
       const transaction = await dealershipContract.methods
-      .addInspector("0xbc57BAEd94eFac14c1F4172748313ef3DCf75c30")
-      .send({from: address, gas: 6000000})
+        .addInspector("0xbc57BAEd94eFac14c1F4172748313ef3DCf75c30")
+        .send({ from: address, gas: 6000000 });
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   const getCurrentEthPrice = async (usdAmount) => {
     const response = await axios.get(
@@ -278,28 +281,29 @@ export const AppProvider = ({ children }) => {
     }
 
     setNfts(nfts);
-
   };
 
   const loadSoldNftData = async () => {
-    const soldSupply = await dealershipContract.methods.getAllSoldTokens().call();
+    const soldSupply = await dealershipContract.methods
+      .getAllSoldTokens()
+      .call();
 
     const soldNfts = [];
 
-    for (let i = 0; i <= soldSupply.length -1; i++) {
+    for (let i = 0; i <= soldSupply.length - 1; i++) {
       let soldNftResponse;
       let nftSoldPrice;
 
       const soldUri = await mintContract.methods.tokenURI(soldSupply[i]).call();
 
       await axios
-      .get(soldUri)
-      .then((response) => {
-        soldNftResponse = response;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+        .get(soldUri)
+        .then((response) => {
+          soldNftResponse = response;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
 
       try {
         nftSoldPrice = await dealershipContract.methods
@@ -309,13 +313,12 @@ export const AppProvider = ({ children }) => {
         console.error(error);
       }
       let status = {
-        sold: true
-      }
-      soldNfts.push([soldNftResponse.data, nftSoldPrice])
-
+        sold: true,
+      };
+      soldNfts.push([soldNftResponse.data, nftSoldPrice]);
     }
     setSoldNfts(soldNfts);
-  }
+  };
 
   const removeCarToken = async (nftId) => {
     try {
@@ -329,30 +332,61 @@ export const AppProvider = ({ children }) => {
 
   const setInspectionStatus = async (nftId, status) => {
     try {
-      const inspectionStatus = await dealershipContract.methods
+      setTransactionModalStatus(true);
+
+      const inspectionStatusTransaction = await dealershipContract.methods
         .updatedInspectionStatus(nftId, status)
         .send({ from: address, gas: 5000000 });
+
+      const receipt = await web3.eth.getTransactionReceipt(
+        inspectionStatusTransaction.transactionHash
+      );
+
+      if(receipt.status == true){
+        setTransactionModalStatus(false);
+      }
     } catch (error) {
+      setTransactionModalStatus(false);
       console.error(error);
     }
   };
 
   const buyCar = async (nftId, price) => {
     try {
-      const buy = await dealershipContract.methods
+      setTransactionModalStatus(true);
+      console.log(price)
+      const buyTransaction = await dealershipContract.methods
         .buyCar(nftId)
         .send({ from: address, value: price, gas: 5000000 });
+
+      const receipt = await web3.eth.getTransactionReceipt(
+        buyTransaction.transactionHash
+      );
+      if (receipt.status === true) {
+        setTransactionModalStatus(false);
+      }
     } catch (error) {
+      setTransactionModalStatus(false);
       console.error(error);
     }
   };
 
   const approveSale = async (nftId, address) => {
     try {
-      const approve = await dealershipContract.methods
+      setTransactionModalStatus(true);
+
+      const approveTransaction = await dealershipContract.methods
         .approveSale(nftId)
         .send({ from: address, gas: 5000000 });
+
+      const receipt = await web3.eth.getTransactionReceipt(
+        approveTransaction.transactionHash
+      );
+      if (receipt.status === true) {
+        setTransactionModalStatus(false);
+      }
     } catch {
+      setTransactionModalStatus(false);
       console.error(error);
     }
   };
@@ -364,23 +398,34 @@ export const AppProvider = ({ children }) => {
         .call();
       return approvalStatus;
     } catch (error) {
-      console.errpr(error);
+      console.error(error);
     }
   };
 
   const finalizeSale = async (nftId) => {
+    setTransactionModalStatus(true);
     try {
       const price = await dealershipContract.methods
         .purchaseAmount(nftId)
         .call();
     } catch (error) {
+      setTransactionModalStatus(false);
       console.error(error);
     }
     try {
-      const finalizeSale = await dealershipContract.methods
+      const finalizeSaleTransaction = await dealershipContract.methods
         .finalizeSale(nftId)
         .send({ from: address, gas: 5000000 });
+
+      const receipt = await web3.eth.getTransactionReceipt(
+        finalizeSaleTransaction.transactionHash
+      );
+
+      if (receipt.status == true) {
+        setTransactionModalStatus(false);
+      }
     } catch (error) {
+      setTransactionModalStatus(true);
       console.error(error);
     }
   };
@@ -390,8 +435,12 @@ export const AppProvider = ({ children }) => {
       value={{
         userAddress,
         page,
+        button,
+        card,
         dealershipContract,
         setPage,
+        setCard,
+        setContextButton,
         uploadToIpfs,
         loadNftData,
         loadSoldNftData,
@@ -400,10 +449,11 @@ export const AppProvider = ({ children }) => {
         approveSale,
         approvalStatus,
         finalizeSale,
-        showModal,
+        setTransactionModalStatus,
+        transactionModalStatus,
         nfts,
         soldNfts,
-        events
+        events,
       }}
     >
       {children}
