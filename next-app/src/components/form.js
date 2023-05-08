@@ -23,8 +23,8 @@ const uploaderOptions = {
 const style = {
   container: "flex flex-row items-center justify-center w-full",
   form: "w-3/4",
-  formCol: "p-5 flex-col w-1/2 flex-1 pr-2", // add flex-1 and pr-2
-  formRow: "flex flex-wrap w-full", // add flex and flex-wrap
+  formCol: "p-5 md:w-1/2", // add flex-1 and pr-2
+  formRow: "flex flex-col md:flex-row w-full justify-center", // add flex and flex-wrap
   inputGroup: "pb-4",
   input: "w-100 h-8 rounded-lg bg-white text-black min-w-full",
   descriptionTextArea: "w-100 rounded-lg bg-white text-black min-w-full h-32",
@@ -53,7 +53,7 @@ export default function Form() {
   const [images, setImages] = useState([]);
   const [imageModalStatus, setImageModalStatus] = useState(true);
 
-  const { uploadToIpfs, showModal } = useAppContext();
+  const { uploadToIpfs, transactionModalStatus } = useAppContext();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -418,7 +418,7 @@ export default function Form() {
           </div>
         </div>
       </form>
-      {showModal && (
+      {transactionModalStatus && (
           <Loading>
             <h2>Hello, World!</h2>
             <p>Minting NFT Please Hold</p>

@@ -6,8 +6,8 @@ import { useAppContext } from "../context/context";
 
 const style = {
   connectButtonContainer: "pl-4",
-  headerButtonContainer: "flex flex-row items-center justify-center",
-  headerButton: "w-40",
+  headerButtonContainer: "items-center justify-center",
+  headerButton: "w-40 p-1",
 };
 const header = () => {
   const { userAddress, setPage } = useAppContext();

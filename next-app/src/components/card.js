@@ -29,7 +29,10 @@ const Card = (props) => {
     finalizeSale,
     approvalStatus,
     events,
-    showModal
+    showModal,
+    setPage,
+    setCard,
+    setContextButton
   } = useAppContext();
 
   const [button, setButton] = useState(null);
@@ -149,7 +152,9 @@ const Card = (props) => {
       <div
         className={styles.bottomCard}
         onClick={() => {
-          props.handleOpen(card, button);
+          setContextButton(button);
+          setCard(card);
+          setPage("Listing")
         }}
       >
         <div className={styles.textContainer}>

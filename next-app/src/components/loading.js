@@ -4,13 +4,13 @@ const styles = {
   container: "flex flex-col items-center justify-center mt-8",
   title: "text-4xl font-bold text-center",
   carWrapper: "mt-8",
-  car: "animate-bounce w-52 h-52",
+  car: "animate-bounce w-48 h-48",
   modal:
     "fixed inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center z-[2]",
   spanDiv: "p-5",
-  headerText: "text-4xl font-bold",
+  headerText: "text-3xl font-bold",
   modalContent:
-    "w-1/2 h-3/4 overflow-auto bg-white text-black rounded-lg object-contain overflow-auto",
+    "sm:max-w-full lg:h-4/12 lg:w-4/12 overflow-auto bg-white text-black rounded-lg object-contain overflow-auto",
   contentContainer: "items-center justify-center",
   imageContainer: "flex items-center min-h-[16rem] max-h-[16rem]",
   image: "max-h-[16rem] m-auto object-contain w-100",
@@ -25,7 +25,7 @@ const loading = () => {
       <div className={styles.modalContent}>
         <div className={styles.contentContainer}>
           <div className={styles.textContainer}>
-            <h2 className={styles.headerText}>Waiting for transaction</h2>
+            <h4 className={styles.headerText}>Waiting for transaction</h4>
           </div>
           <div className={styles.container}>
             <div className={styles.carWrapper}>
