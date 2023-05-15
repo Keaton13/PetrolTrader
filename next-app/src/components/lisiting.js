@@ -43,6 +43,9 @@ const lisiting = () => {
       <div className={styles.textContainer}>
         <p className={styles.text}>{data.description}</p>
       </div>
+            <div className={styles.detailsContainer}>
+        {button}
+      </div>
       <div className={styles.detailsContainer}>
       <div className={styles.detailsCol}>
           <h2 className={styles.detailsHeader}>Vin</h2>
@@ -64,9 +67,6 @@ const lisiting = () => {
           <h2 className={styles.detailsHeader}>Location</h2>
           <p className={styles.detailsValue}>{data.city}, {data.state}</p>
         </div>
-      </div>
-      <div className={styles.detailsContainer}>
-        {button}
       </div>
     </div>
 

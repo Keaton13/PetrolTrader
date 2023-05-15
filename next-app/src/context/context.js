@@ -42,6 +42,8 @@ export const AppProvider = ({ children }) => {
     setDealershipContract(dealershipContract);
     setMintContract(mintContract);
 
+    // removeCarToken(5);
+
     const carListedEvent = dealershipContract.events.CarListed(
       {},
       (error, event) => {
@@ -211,6 +213,8 @@ export const AppProvider = ({ children }) => {
 
     const nfts = [];
 
+    // console.log(totalSupply);
+
     for (let i = 0; i <= totalSupply.length - 1; i++) {
       let nftResponse;
       let inspectionResponse;
@@ -220,13 +224,27 @@ export const AppProvider = ({ children }) => {
       let approvalStatus;
       const uri = await mintContract.methods.tokenURI(totalSupply[i]).call();
 
+      // await axios
+      //   .get(uri)
+      //   .then((response) => {
+          // nftResponse = response;
+      //   })
+      //   .catch((error) => {
+      //     console.error(error);
+      //   });
+
+      const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+
       await axios
-        .get(uri)
+        .get(proxyUrl + uri)
         .then((response) => {
+          // handle response
           nftResponse = response;
         })
         .catch((error) => {
+          // handle error
           console.error(error);
+
         });
 
       try {
@@ -342,7 +360,7 @@ export const AppProvider = ({ children }) => {
         inspectionStatusTransaction.transactionHash
       );
 
-      if(receipt.status == true){
+      if (receipt.status == true) {
         setTransactionModalStatus(false);
       }
     } catch (error) {
@@ -354,7 +372,7 @@ export const AppProvider = ({ children }) => {
   const buyCar = async (nftId, price) => {
     try {
       setTransactionModalStatus(true);
-      console.log(price)
+      // console.log(price)
       const buyTransaction = await dealershipContract.methods
         .buyCar(nftId)
         .send({ from: address, value: price, gas: 5000000 });

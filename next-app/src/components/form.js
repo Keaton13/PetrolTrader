@@ -22,8 +22,8 @@ const uploaderOptions = {
 
 const style = {
   container: "flex flex-row items-center justify-center w-full",
-  form: "w-3/4",
-  formCol: "p-5 md:w-1/2", // add flex-1 and pr-2
+  form: "lg:w-3/4 sm:w-full",
+  formCol: "p-5 md:w-3/4", // add flex-1 and pr-2
   formRow: "flex flex-col md:flex-row w-full justify-center", // add flex and flex-wrap
   inputGroup: "pb-4",
   input: "w-100 h-8 rounded-lg bg-white text-black min-w-full",
@@ -31,7 +31,7 @@ const style = {
   label: "mr-2 font-bold",
   buttonRow:"flex justify-center",
   button:
-    "bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline",
+    "bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-2/5",
 };
 
 export default function Form() {
