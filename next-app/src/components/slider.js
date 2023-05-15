@@ -7,7 +7,7 @@ const ImageSlider = (props) => {
     const images = props.images;
 
     const styles = {
-        image: "m-auto m-h-100 object-contain w-100 rounded-t-lg",
+        image: "m-auto h-auto object-contain w-full rounded-t-lg",
         imageContainer: "flex items-center",
     }
 
@@ -17,7 +17,8 @@ const ImageSlider = (props) => {
       speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
-      arrows: true
+      arrows: true,
+      adaptiveHeight: true,
     };
     
     return (

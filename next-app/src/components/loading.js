@@ -10,7 +10,7 @@ const styles = {
   spanDiv: "p-5",
   headerText: "text-3xl font-bold",
   modalContent:
-    "sm:max-w-full lg:h-4/12 lg:w-4/12 overflow-auto bg-white text-black rounded-lg object-contain overflow-auto",
+    "sm:max-w-full lh-4/12 lg:w-4/12 overflow-auto bg-white text-black rounded-lg object-contain overflow-auto",
   contentContainer: "items-center justify-center",
   imageContainer: "flex items-center min-h-[16rem] max-h-[16rem]",
   image: "max-h-[16rem] m-auto object-contain w-100",
