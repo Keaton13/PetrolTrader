@@ -1,3 +1,4 @@
+
 .main {
   display: flex;
   flex-direction: column;
@@ -6,6 +7,8 @@
   padding: 6rem;
   min-height: 100vh;
 }
+
+
 
 .description {
   display: inherit;
@@ -41,7 +44,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(25%, auto));
+  grid-template-columns: repeat(3, minmax(25%, auto));
   width: var(--max-width);
   max-width: 100%;
 }
@@ -78,6 +81,7 @@
   align-items: center;
   position: relative;
   padding: 4rem 0;
+  width: 100%;
 }
 
 .center::before {
@@ -102,6 +106,7 @@
   position: absolute;
   filter: blur(45px);
   transform: translateZ(0);
+  z-index: -1;
 }
 
 .logo,
@@ -113,10 +118,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 75px;
-  height: 75px;
+  width: 100px;
+  height: 100px;
+  margin: auto;
   padding: 25px 10px;
-  margin-left: 16px;
   transform: translateZ(0);
   border-radius: var(--border-radius);
   overflow: hidden;
@@ -141,7 +146,7 @@
 /* Inner Square */
 .thirteen::after {
   inset: 0;
-  padding: 1px;
+  padding: 5px;
   border-radius: var(--border-radius);
   background: linear-gradient(
     to bottom right,
@@ -175,6 +180,15 @@
 
 /* Mobile */
 @media (max-width: 700px) {
+  .main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    min-height: 100vh;
+  }
+
   .content {
     padding: 4rem;
   }
@@ -195,7 +209,7 @@
   }
 
   .center {
-    padding: 8rem 0 6rem;
+    padding: 2rem 0 2rem;
   }
 
   .center::before {
@@ -205,6 +219,7 @@
 
   .description {
     font-size: 0.8rem;
+    contain: content;
   }
 
   .description a {
@@ -212,12 +227,6 @@
   }
 
   .description p,
-  .description div {
-    display: flex;
-    justify-content: center;
-    position: fixed;
-    width: 100%;
-  }
 
   .description p {
     align-items: center;
@@ -235,19 +244,6 @@
     backdrop-filter: blur(24px);
   }
 
-  .description div {
-    align-items: flex-end;
-    pointer-events: none;
-    inset: auto 0 0;
-    padding: 2rem;
-    height: 200px;
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgb(var(--background-end-rgb)) 40%
-    );
-    z-index: 1;
-  }
 }
 
 /* Tablet and Smaller Desktop */
@@ -276,3 +272,4 @@
     transform: rotate(0deg);
   }
 }
+
