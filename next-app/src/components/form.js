@@ -129,7 +129,7 @@ export default function Form() {
             </div>
             <div className={style.inputGroup}>
               <div>
-                <label className={style.label} htmlFor="model">
+                <label className={style.label} htmlFor="Year">
                   Year:
                 </label>
               </div>
@@ -168,7 +168,7 @@ export default function Form() {
             <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="mileage">
+                <label className={style.label} htmlFor="Vin Number">
                   Vin Number:
                 </label>
               </div>
@@ -176,7 +176,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="mileage"
+                  id="Vin"
                   className={style.input}
                   value={vin}
                   onChange={(event) => setVin(event.target.value)}
@@ -188,7 +188,7 @@ export default function Form() {
             <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="condition">
+                <label className={style.label} htmlFor="City">
                   City:
                 </label>
               </div>
@@ -196,7 +196,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="condition"
+                  id="city"
                   className={style.input}
                   value={city}
                   onChange={(event) => setCity(event.target.value)}
@@ -207,7 +207,7 @@ export default function Form() {
             <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="condition">
+                <label className={style.label} htmlFor="State">
                   State:
                 </label>
               </div>
@@ -215,7 +215,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="condition"
+                  id="state"
                   className={style.input}
                   value={state}
                   onChange={(event) => setState(event.target.value)}
@@ -246,7 +246,7 @@ export default function Form() {
             <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="price">
+                <label className={style.label} htmlFor="Title">
                   Title Status:
                 </label>
               </div>
@@ -254,7 +254,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="price"
+                  id="Title"
                   className={style.input}
                   value={titleStatus}
                   onChange={(event) => setTitleStatus(event.target.value)}
@@ -268,7 +268,7 @@ export default function Form() {
             <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="condition">
+                <label className={style.label} htmlFor="Upload">
                   Upload Pictures:
                 </label>
               </div>
@@ -295,7 +295,7 @@ export default function Form() {
             <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="price">
+                <label className={style.label} htmlFor="Cylinders">
                   Cylinders:
                 </label>
               </div>
@@ -303,7 +303,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="price"
+                  id="cylinders"
                   className={style.input}
                   value={cylinders}
                   onChange={(event) => setCylinders(event.target.value)}
@@ -314,7 +314,7 @@ export default function Form() {
             </div>            <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="price">
+                <label className={style.label} htmlFor="Drive">
                   Drive:
                 </label>
               </div>
@@ -322,7 +322,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="price"
+                  id="drive"
                   className={style.input}
                   value={drive}
                   onChange={(event) => setDrive(event.target.value)}
@@ -333,7 +333,7 @@ export default function Form() {
             </div>            <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="price">
+                <label className={style.label} htmlFor="Fuel">
                   Fuel:
                 </label>
               </div>
@@ -341,7 +341,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="price"
+                  id="fuel"
                   className={style.input}
                   value={fuel}
                   onChange={(event) => setFuel(event.target.value)}
@@ -353,7 +353,7 @@ export default function Form() {
             <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="price">
+                <label className={style.label} htmlFor="Transmission">
                   Transmission:
                 </label>
               </div>
@@ -361,7 +361,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="price"
+                  id="transmission"
                   className={style.input}
                   value={transmission}
                   onChange={(event) => setTransmission(event.target.value)}
@@ -373,7 +373,7 @@ export default function Form() {
             <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="price">
+                <label className={style.label} htmlFor="Type">
                   Type:
                 </label>
               </div>
@@ -381,7 +381,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="price"
+                  id="type"
                   className={style.input}
                   value={type}
                   onChange={(event) => setType(event.target.value)}
