@@ -58,7 +58,7 @@ export const AppProvider = ({ children }) => {
     const carBoughtEvent = dealershipContract.events.CarBought(
       {},
       (error, event) => {
-        console.log("Event working");
+        // console.log("Event working");
         if (error) {
           console.error(error);
         } else {
@@ -125,6 +125,11 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // const getCurrentGasPrice = async () => {
+  //   let gasPrice = await web3.eth.getGasPrice();
+  //   setCurrentGasPrice(gasPrice);
+  // } 
+
   const mint = async (tokenURI, metaData) => {
     const nftMetaData = JSON.parse(metaData);
     let newItemId;
@@ -134,9 +139,9 @@ export const AppProvider = ({ children }) => {
     try {
       const transaction = await mintContract.methods
         .mint(tokenURI, dealershipContract._address)
-        .send({ from: address, gas: 6000000 });
+        .send({ from: address, gasPrice: 20000000000 });
 
-      console.log(transaction);
+      // console.log(transaction);
 
       newItemId = transaction.events.Transfer.returnValues.tokenId;
 
@@ -148,11 +153,11 @@ export const AppProvider = ({ children }) => {
         transaction.transactionHash
       );
 
-      console.log(receipt);
+      // console.log(receipt);
 
       if (receipt.status === true) {
         list(newItemId, nftMetaData);
-        console.log("Transaction confirmed!");
+        // console.log("Transaction confirmed!");
       } else {
         console.error("Transaction failed!");
       }
@@ -173,7 +178,7 @@ export const AppProvider = ({ children }) => {
     try {
       const transaction = await dealershipContract.methods
         .listCar(newItemId, web3.utils.toWei(String(priceConversion), "ether"))
-        .send({ from: address, gas: 6000000 });
+        .send({ from: address });
 
       const receipt = await web3.eth.getTransactionReceipt(
         transaction.transactionHash
@@ -191,7 +196,7 @@ export const AppProvider = ({ children }) => {
     try {
       const transaction = await dealershipContract.methods
         .addInspector("0xbc57BAEd94eFac14c1F4172748313ef3DCf75c30")
-        .send({ from: address, gas: 6000000 });
+        .send({ from: address, gasPrice: 20000000000 });
     } catch (error) {
       console.error(error);
     }
@@ -224,19 +229,10 @@ export const AppProvider = ({ children }) => {
       let approvalStatus;
       const uri = await mintContract.methods.tokenURI(totalSupply[i]).call();
 
-      // await axios
-      //   .get(uri)
-      //   .then((response) => {
-          // nftResponse = response;
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //   });
-
-      const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+      // const proxyUrl = "https://cors-anywhere.herokuapp.com/";
 
       await axios
-        .get(proxyUrl + uri)
+        .get(uri)
         .then((response) => {
           // handle response
           nftResponse = response;
@@ -342,7 +338,7 @@ export const AppProvider = ({ children }) => {
     try {
       const removalStatus = await dealershipContract.methods
         .removeToken(nftId)
-        .send({ from: address, gas: 5000000 });
+        .send({ from: address, gasPrice: 20000000000 });
     } catch (error) {
       console.error(error);
     }
@@ -354,7 +350,7 @@ export const AppProvider = ({ children }) => {
 
       const inspectionStatusTransaction = await dealershipContract.methods
         .updatedInspectionStatus(nftId, status)
-        .send({ from: address, gas: 5000000 });
+        .send({ from: address, gasPrice: 20000000000 });
 
       const receipt = await web3.eth.getTransactionReceipt(
         inspectionStatusTransaction.transactionHash
@@ -375,7 +371,7 @@ export const AppProvider = ({ children }) => {
       // console.log(price)
       const buyTransaction = await dealershipContract.methods
         .buyCar(nftId)
-        .send({ from: address, value: price, gas: 5000000 });
+        .send({ from: address, value: price, gasPrice: 20000000000 });
 
       const receipt = await web3.eth.getTransactionReceipt(
         buyTransaction.transactionHash
@@ -395,7 +391,7 @@ export const AppProvider = ({ children }) => {
 
       const approveTransaction = await dealershipContract.methods
         .approveSale(nftId)
-        .send({ from: address, gas: 5000000 });
+        .send({ from: address, gasPrice: 20000000000 });
 
       const receipt = await web3.eth.getTransactionReceipt(
         approveTransaction.transactionHash
@@ -433,7 +429,7 @@ export const AppProvider = ({ children }) => {
     try {
       const finalizeSaleTransaction = await dealershipContract.methods
         .finalizeSale(nftId)
-        .send({ from: address, gas: 5000000 });
+        .send({ from: address, gasPrice: 20000000000 });
 
       const receipt = await web3.eth.getTransactionReceipt(
         finalizeSaleTransaction.transactionHash

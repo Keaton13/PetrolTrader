@@ -21,7 +21,7 @@ const styles = {
 const lisiting = () => {
 
     const {button, card, userAddress} = useAppContext()
-    console.log(button, card)
+    // console.log(button, card)
     let data = card.attributes;
 
     let milage = parseInt(data.mileage, "10");
