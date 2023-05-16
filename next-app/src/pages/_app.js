@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { localhost, goerli } from "wagmi/chains";
 import "@rainbow-me/rainbowkit/styles.css";
+// require('dotenv').config();
 
 import {
   getDefaultWallets,

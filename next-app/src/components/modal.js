@@ -22,7 +22,7 @@ const styles = {
 
 function Modal(props) {
   let data = props.card.attributes;
-  console.log(data);
+  // console.log(data);
   let stringPrice = parseFloat(data.price);
   stringPrice = stringPrice.toLocaleString();
 

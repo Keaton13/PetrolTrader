@@ -2,5 +2,4 @@
 .env*.local
 .env
 /next-app/.env
-/next-app/next.config.js
 .DS_Store
