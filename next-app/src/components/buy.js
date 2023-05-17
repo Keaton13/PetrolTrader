@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useAppContext } from "../context/context";
-import { useAccount } from "wagmi";
 import Card from "./card";
-import Modal from "./modal";
-import Loading from './loading';
+import Loading from "./loading";
 
 const style = {
   container: "flex flex-col items-center justify-center w-full",
@@ -18,28 +16,8 @@ const style = {
 };
 
 const Buy = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [card, setCard] = useState();
-  const [button, setButton] = useState();
-
+  // Grabbing NFT data and Modal State from context
   const { nfts, transactionModalStatus } = useAppContext();
-
-  const { address } = useAccount();
-
-  useEffect(() => {
-    handleClose();
-  }, [address]);
-
-  const handleClose = (card) => {
-    setShowModal(false);
-    setCard();
-  };
-
-  const handleOpen = (card, button) => {
-    setCard(card);
-    setButton(button);
-    setShowModal(true);
-  };
 
   return (
     <div className={style.container}>
@@ -52,21 +30,12 @@ const Buy = () => {
             </div>
           ))
         ) : (
-          <div><Loading /></div>
+          <div>
+            <Loading />
+          </div>
         )}
       </div>
-      {showModal && (
-        <Modal onClose={handleClose} card={card} button={button}>
-          <h2>Hello, World!</h2>
-          <p>This is my modal dialog.</p>
-        </Modal>
-      )}
-      {transactionModalStatus && (
-        <Loading>
-          <h2>Hello, World!</h2>
-          <p>Minting NFT Please Hold</p>
-        </Loading>
-      )}
+      {transactionModalStatus && <Loading />}
     </div>
   );
 };

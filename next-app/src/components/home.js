@@ -11,9 +11,11 @@ import Listing from "./lisiting";
 import { useAppContext } from "../context/context";
 
 export default function Home() {
+  // Using the App Context to access variables below
   const { userAddress, page, setPage, events, loadNftData, loadSoldNftData } =
     useAppContext();
 
+  // Perform actions when address or events are triggered
   useEffect(() => {
     if (userAddress) {
       loadNftData();
@@ -26,10 +28,12 @@ export default function Home() {
     }
   }, [userAddress, events]);
 
+  // Perform actions when address changes
   useEffect(() => {
     setPage("Buy")
   }, [userAddress])
 
+  // Styles for the Home component
   const style = {
     container: "flex flex-col items-center justify-center",
     title: "text-4xl font-bold text-center text-white",
@@ -39,6 +43,7 @@ export default function Home() {
     textLogo: "text-white text-lg",
   };
 
+  // Conditional rendering for components based off page state
   let content = null;
   if (page == "List") {
     content = <List />;

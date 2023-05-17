@@ -3,11 +3,13 @@ import styles from "@/styles/Home.module.css";
 import { Inter } from "next/font/google";
 import { useAppContext } from "../context/context";
 
+// Importing the Inter font and specifying the "latin" subset
 const inter = Inter({ subsets: ["latin"] });
 
 
 const footer = () => {
-  const { userAddress, setPage } = useAppContext();
+    // Using the App Context to access setPage
+  const {setPage } = useAppContext();
 
   return (
     <div className={styles.grid}>

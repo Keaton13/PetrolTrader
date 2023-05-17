@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppContext } from "../context/context";
 import { Uploader } from "uploader";
 import { UploadDropzone } from "react-uploader";
-import Loading from './loading';
+import Loading from "./loading";
 
 // Initialize once (at the start of your app).
 const uploader = Uploader({ apiKey: process.env.UPLOADER }); // Your real API key.
@@ -20,6 +20,7 @@ const uploaderOptions = {
   },
 };
 
+// Styles for the form component
 const style = {
   container: "flex flex-row items-center justify-center w-full",
   form: "lg:w-3/4 sm:w-full",
@@ -29,7 +30,7 @@ const style = {
   input: "w-100 h-8 rounded-lg bg-white text-black min-w-full",
   descriptionTextArea: "w-100 rounded-lg bg-white text-black min-w-full h-32",
   label: "mr-2 font-bold",
-  buttonRow:"flex justify-center",
+  buttonRow: "flex justify-center",
   button:
     "bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-2/5",
 };
@@ -53,12 +54,13 @@ export default function Form() {
   const [images, setImages] = useState([]);
   const [imageModalStatus, setImageModalStatus] = useState(true);
 
+  // Using the App Context to access uploadToIpfs and transactionModalResponse
   const { uploadToIpfs, transactionModalStatus } = useAppContext();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Do something with the form data, like submit to a server or update state
-    if(images[0]) {
+    // From data collected from the form below, converted to a string and sent to uploadToIpfs function
+    if (images[0]) {
       const metaData = {
         images: images,
         attributes: {
@@ -67,7 +69,7 @@ export default function Form() {
           year,
           mileage,
           price,
-          vin, 
+          vin,
           description,
           city,
           state,
@@ -79,11 +81,11 @@ export default function Form() {
           type,
         },
       };
-  
+
       const metaDataString = JSON.stringify(metaData);
       uploadToIpfs(metaDataString);
     } else {
-      alert("Error need to publish image")
+      alert("Error need to publish image");
     }
   };
 
@@ -311,7 +313,8 @@ export default function Form() {
                   step="any"
                 />
               </div>
-            </div>            <div className={style.inputGroup}>
+            </div>{" "}
+            <div className={style.inputGroup}>
               <div>
                 {" "}
                 <label className={style.label} htmlFor="Drive">
@@ -330,7 +333,8 @@ export default function Form() {
                   step="any"
                 />
               </div>
-            </div>            <div className={style.inputGroup}>
+            </div>{" "}
+            <div className={style.inputGroup}>
               <div>
                 {" "}
                 <label className={style.label} htmlFor="Fuel">
@@ -419,11 +423,11 @@ export default function Form() {
         </div>
       </form>
       {transactionModalStatus && (
-          <Loading>
-            <h2>Hello, World!</h2>
-            <p>Minting NFT Please Hold</p>
-          </Loading>
-        )}
+        <Loading>
+          <h2>Hello, World!</h2>
+          <p>Minting NFT Please Hold</p>
+        </Loading>
+      )}
     </div>
   );
 }
