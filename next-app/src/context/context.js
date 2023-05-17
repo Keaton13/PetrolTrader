@@ -5,8 +5,10 @@ import { useAccount } from "wagmi";
 const Web3 = require("web3");
 const axios = require("axios");
 
+// Creating a context for the app
 export const AppContext = createContext();
 
+// Creating a provider for the context which includes the entire app state and functions
 export const AppProvider = ({ children }) => {
   const [userAddress, setUserAddress] = useState();
   const [page, setPage] = useState("Listing");
@@ -19,14 +21,19 @@ export const AppProvider = ({ children }) => {
   const [events, setEvent] = useState();
   const [showModal, setShowModal] = useState(false);
   const [transactionModalStatus, setTransactionModalStatus] = useState(false);
+
+  // Creating a new Web3 provider
   const provider = new Web3.providers.HttpProvider(
     `https://goerli.infura.io/v3/${process.env.INFURA_API_KEY}`
   );
 
+  // Creating a new Web3 instance
   const web3 = new Web3(provider);
 
+  // Using the account hook to get the user's Ethereum address
   const { address } = useAccount();
 
+  // Updating the userAddress state whenever the address changes
   useEffect(() => {
     if (!address) {
       setUserAddress(address);
@@ -36,14 +43,14 @@ export const AppProvider = ({ children }) => {
   }, [address]);
 
   useEffect(() => {
+    // initiating ETH contracts and saving contracts to state
     const contracts = createContract();
     const dealershipContract = contracts.dealerContract;
     const mintContract = contracts.mintContract;
     setDealershipContract(dealershipContract);
     setMintContract(mintContract);
 
-    // removeCarToken(5);
-
+    // Setting event handlers to watch for contract events
     const carListedEvent = dealershipContract.events.CarListed(
       {},
       (error, event) => {
@@ -99,6 +106,8 @@ export const AppProvider = ({ children }) => {
         }
       }
     );
+
+    // Unsubscribing from events
     return () => {
       carListedEvent.unsubscribe();
       carBoughtEvent.unsubscribe();
@@ -108,6 +117,12 @@ export const AppProvider = ({ children }) => {
     };
   }, []);
 
+  /**
+   * Upload metadata to IPFS.
+   *
+   * @param {Object} metaData - The metadata to upload to IPFS.
+   * @returns {Promise<Object>} The response data from the IPFS API.
+   */
   const uploadToIpfs = async (metaData) => {
     try {
       const options = {
@@ -125,11 +140,12 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  // const getCurrentGasPrice = async () => {
-  //   let gasPrice = await web3.eth.getGasPrice();
-  //   setCurrentGasPrice(gasPrice);
-  // } 
-
+  /**
+   * Mint a new token
+   *
+   * @param {string} tokenURI - The URI of the token.
+   * @param {Object} metaData - The metadata associated with the token.
+   */
   const mint = async (tokenURI, metaData) => {
     const nftMetaData = JSON.parse(metaData);
     let newItemId;
@@ -141,23 +157,14 @@ export const AppProvider = ({ children }) => {
         .mint(tokenURI, dealershipContract._address)
         .send({ from: address, gasPrice: 20000000000 });
 
-      // console.log(transaction);
-
       newItemId = transaction.events.Transfer.returnValues.tokenId;
-
-      // const approvalTransaction = await mintContract.methods
-      //   .approve(dealershipContract._address, newItemId)
-      //   .send({ from: address, gas: 3000000 });
 
       const receipt = await web3.eth.getTransactionReceipt(
         transaction.transactionHash
       );
 
-      // console.log(receipt);
-
       if (receipt.status === true) {
         list(newItemId, nftMetaData);
-        // console.log("Transaction confirmed!");
       } else {
         console.error("Transaction failed!");
       }
@@ -167,6 +174,12 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  /**
+   * List a new item.
+   *
+   * @param {string} newItemId - The ID of the new item.
+   * @param {Object} nftMetaData - The metadata of the NFT.
+   */
   const list = async (newItemId, nftMetaData) => {
     const priceConversion = await getCurrentEthPrice(
       nftMetaData.attributes.price
@@ -192,6 +205,9 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  /**
+   * Add an inspector.
+   */
   const setInspector = async () => {
     try {
       const transaction = await dealershipContract.methods
@@ -202,6 +218,12 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  /**
+   * Get the current price of Ether in USD.
+   *
+   * @param {number} usdAmount - The amount in USD to convert to Ether.
+   * @returns {Promise<number>} The equivalent amount of Ether.
+   */
   const getCurrentEthPrice = async (usdAmount) => {
     const response = await axios.get(
       "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
@@ -213,12 +235,13 @@ export const AppProvider = ({ children }) => {
     return Number(roundedEtherAmount);
   };
 
+  /**
+   * Load NFT data.
+   */
   const loadNftData = async () => {
     const totalSupply = await dealershipContract.methods.getAllTokens().call();
 
     const nfts = [];
-
-    // console.log(totalSupply);
 
     for (let i = 0; i <= totalSupply.length - 1; i++) {
       let nftResponse;
@@ -229,20 +252,17 @@ export const AppProvider = ({ children }) => {
       let approvalStatus;
       const uri = await mintContract.methods.tokenURI(totalSupply[i]).call();
 
-      // const proxyUrl = "https://cors-anywhere.herokuapp.com/";
-
+      // Get TokenURI from IPFS
       await axios
         .get(uri)
         .then((response) => {
-          // handle response
           nftResponse = response;
         })
         .catch((error) => {
-          // handle error
           console.error(error);
-
         });
 
+      // Get NFT information from Contract
       try {
         inspectionResponse = await dealershipContract.methods
           .inspectionPassed(totalSupply[i])
@@ -297,6 +317,9 @@ export const AppProvider = ({ children }) => {
     setNfts(nfts);
   };
 
+  /**
+   * Load sold NFT data.
+   */
   const loadSoldNftData = async () => {
     const soldSupply = await dealershipContract.methods
       .getAllSoldTokens()
@@ -334,6 +357,11 @@ export const AppProvider = ({ children }) => {
     setSoldNfts(soldNfts);
   };
 
+  /**
+   * Remove a car token.
+   *
+   * @param {number} nftId - The ID of the NFT to remove.
+   */
   const removeCarToken = async (nftId) => {
     try {
       const removalStatus = await dealershipContract.methods
@@ -344,6 +372,12 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  /**
+   * Set the inspection status.
+   *
+   * @param {number} nftId - The ID of the NFT to inspect.
+   * @param {boolean} status - The inspection status.
+   */
   const setInspectionStatus = async (nftId, status) => {
     try {
       setTransactionModalStatus(true);
@@ -365,6 +399,12 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  /**
+   * Buy a car.
+   *
+   * @param {number} nftId - The ID of the NFT to buy.
+   * @param {number} price - The price of the car.
+   */
   const buyCar = async (nftId, price) => {
     try {
       setTransactionModalStatus(true);
@@ -385,6 +425,12 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  /**
+   * Approve a sale.
+   *
+   * @param {number} nftId - The ID of the NFT to approve for sale.
+   * @param {string} address - The Ethereum address of the buyer.
+   */
   const approveSale = async (nftId, address) => {
     try {
       setTransactionModalStatus(true);
@@ -405,6 +451,12 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  /**
+   * Check the approval status.
+   *
+   * @param {number} nftId - The ID of the NFT to check for approval.
+   * @returns {Promise<boolean>} The approval status.
+   */
   const approvalStatus = async (nftId) => {
     try {
       const approvalStatus = await dealershipContract.methods
@@ -416,6 +468,11 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  /**
+   * Finalize a sale.
+   *
+   * @param {number} nftId - The ID of the NFT to finalize the sale for.
+   */
   const finalizeSale = async (nftId) => {
     setTransactionModalStatus(true);
     try {
@@ -444,6 +501,7 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // Returning the provider with all the state variables and functions
   return (
     <AppContext.Provider
       value={{
@@ -475,6 +533,7 @@ export const AppProvider = ({ children }) => {
   );
 };
 
+// Exporting a hook to use the app context
 export const useAppContext = () => {
   return useContext(AppContext);
 };

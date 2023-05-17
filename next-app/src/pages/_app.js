@@ -2,7 +2,6 @@ import "../styles/globals.css";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { localhost, goerli } from "wagmi/chains";
 import "@rainbow-me/rainbowkit/styles.css";
-// require('dotenv').config();
 
 import {
   getDefaultWallets,
@@ -10,11 +9,13 @@ import {
   darkTheme,
 } from "@rainbow-me/rainbowkit";
 
+// Importing Providers from Wagmi
 import { infuraProvider } from "wagmi/providers/infura";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 import { AppProvider } from "../context/context";
 
+// Configure chains and providers
 const { chains, provider } = configureChains(
   [goerli, localhost],
   [
@@ -28,11 +29,13 @@ const { chains, provider } = configureChains(
   ]
 );
 
+// Get default wallets and connectors
 const { connectors } = getDefaultWallets({
   appName: "PetrolTrader",
   chains,
 });
 
+// Create a WAGMI client with autoConnect enabled
 const wagmiConfig = createClient({
   autoConnect: true,
   connectors,

@@ -4,12 +4,14 @@ import Image from "next/image";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAppContext } from "../context/context";
 
+// Styles for the header component
 const style = {
   connectButtonContainer: "pl-4",
   headerButtonContainer: "items-center justify-center",
   headerButton: "w-40 p-1",
 };
 const header = () => {
+  // Using the App Context to access userAddress and setPage
   const { userAddress, setPage } = useAppContext();
 
   return (
@@ -28,9 +30,21 @@ const header = () => {
       )}
       {userAddress ? (
         <div className={style.headerButtonContainer}>
-          <button className={style.headerButton} onClick={() => setPage('Buy')}>For Sale</button>
-          <button className={style.headerButton} onClick={() => setPage('List')}>List Car</button>
-          <button className={style.headerButton} onClick={() => setPage('Sold')}>Sold</button>
+          <button className={style.headerButton} onClick={() => setPage("Buy")}>
+            For Sale
+          </button>
+          <button
+            className={style.headerButton}
+            onClick={() => setPage("List")}
+          >
+            List Car
+          </button>
+          <button
+            className={style.headerButton}
+            onClick={() => setPage("Sold")}
+          >
+            Sold
+          </button>
         </div>
       ) : (
         <></>

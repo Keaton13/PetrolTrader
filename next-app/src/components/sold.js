@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useAppContext } from "../context/context";
 import { useAccount } from "wagmi";
 import Card from "./card";
-import Modal from "./modal";
 
+// Styles for Sold component
 const style = {
   container: "flex flex-col items-center justify-center w-full",
   cardContainer: "",
@@ -16,33 +16,9 @@ const style = {
   card: "bg-white rounded-lg shadow-lg p-6",
 };
 
-
 const Sold = () => {
+  // Using the App Context to access soldNfts
   const { soldNfts } = useAppContext();
-  const [showModal, setShowModal] = useState(false);
-  const [card, setCard] = useState();
-  const [button, setButton] = useState();
-
-  const { address } = useAccount();
-
-  useEffect(() => {
-  }, [soldNfts])
-
-
-  useEffect(() => {
-    handleClose();
-  }, [address]);
-
-  const handleClose = (card) => {
-    setShowModal(false);
-    setCard();
-  };
-
-  const handleOpen = (card, button) => {
-    setCard(card);
-    setButton(button);
-    setShowModal(true);
-  }
 
   return (
     <div className={style.container}>
@@ -50,16 +26,10 @@ const Sold = () => {
       <div className={style.grid}>
         {soldNfts.map((card, index) => (
           <div key={index}>
-            <Card key={index} card={card} handleOpen={handleOpen}/>
+            <Card key={index} card={card} />
           </div>
         ))}
       </div>
-      {showModal && (
-          <Modal onClose={handleClose} card={card} button={button}>
-            <h2>Hello, World!</h2>
-            <p>This is my modal dialog.</p>
-          </Modal>
-        )}
     </div>
   );
 };
