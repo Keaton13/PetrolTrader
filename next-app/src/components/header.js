@@ -45,6 +45,12 @@ const header = () => {
           >
             Sold
           </button>
+          <button
+            className={style.headerButton}
+            onClick={() => setPage("Portfolio")}
+          >
+            Portfolio
+          </button>
         </div>
       ) : (
         <></>
