@@ -1,5 +1,6 @@
 import React from "react";
 
+// Styles for loading component
 const styles = {
   container: "flex flex-col items-center justify-center mt-8",
   title: "text-4xl font-bold text-center",

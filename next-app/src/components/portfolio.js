@@ -16,13 +16,13 @@ const style = {
   card: "bg-white rounded-lg shadow-lg p-6",
 };
 
-const Sold = () => {
+const Portfolio = () => {
   // Using the App Context to access soldNfts
   const { soldNfts } = useAppContext();
 
   return (
     <div className={style.container}>
-      <h1 className={style.title}>Marketplace</h1>
+      <h1 className={style.title}>Portfolio</h1>
       <div className={style.grid}>
         {soldNfts.map((card, index) => (
           <div key={index}>
@@ -34,4 +34,4 @@ const Sold = () => {
   );
 };
 
-export default Sold;
+export default Portfolio;

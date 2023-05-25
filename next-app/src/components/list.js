@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Form from "./form";
 
+// Styles for List component
 const style = {
   container: "flex flex-col items-center justify-center w-full",
   title: "text-4xl font-bold text-center text-white",

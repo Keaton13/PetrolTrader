@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppContext } from "../context/context";
 import { Uploader } from "uploader";
 import { UploadDropzone } from "react-uploader";
-import Loading from './loading';
+import Loading from "./loading";
 
 // Initialize once (at the start of your app).
 const uploader = Uploader({ apiKey: process.env.UPLOADER }); // Your real API key.
@@ -20,6 +20,7 @@ const uploaderOptions = {
   },
 };
 
+// Styles for the form component
 const style = {
   container: "flex flex-row items-center justify-center w-full",
   form: "lg:w-3/4 sm:w-full",
@@ -29,7 +30,7 @@ const style = {
   input: "w-100 h-8 rounded-lg bg-white text-black min-w-full",
   descriptionTextArea: "w-100 rounded-lg bg-white text-black min-w-full h-32",
   label: "mr-2 font-bold",
-  buttonRow:"flex justify-center",
+  buttonRow: "flex justify-center",
   button:
     "bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-2/5",
 };
@@ -53,12 +54,13 @@ export default function Form() {
   const [images, setImages] = useState([]);
   const [imageModalStatus, setImageModalStatus] = useState(true);
 
+  // Using the App Context to access uploadToIpfs and transactionModalResponse
   const { uploadToIpfs, transactionModalStatus } = useAppContext();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Do something with the form data, like submit to a server or update state
-    if(images[0]) {
+    // From data collected from the form below, converted to a string and sent to uploadToIpfs function
+    if (images[0]) {
       const metaData = {
         images: images,
         attributes: {
@@ -67,7 +69,7 @@ export default function Form() {
           year,
           mileage,
           price,
-          vin, 
+          vin,
           description,
           city,
           state,
@@ -79,11 +81,11 @@ export default function Form() {
           type,
         },
       };
-  
+
       const metaDataString = JSON.stringify(metaData);
       uploadToIpfs(metaDataString);
     } else {
-      alert("Error need to publish image")
+      alert("Error need to publish image");
     }
   };
 
@@ -129,7 +131,7 @@ export default function Form() {
             </div>
             <div className={style.inputGroup}>
               <div>
-                <label className={style.label} htmlFor="model">
+                <label className={style.label} htmlFor="Year">
                   Year:
                 </label>
               </div>
@@ -168,7 +170,7 @@ export default function Form() {
             <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="mileage">
+                <label className={style.label} htmlFor="Vin Number">
                   Vin Number:
                 </label>
               </div>
@@ -176,7 +178,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="mileage"
+                  id="Vin"
                   className={style.input}
                   value={vin}
                   onChange={(event) => setVin(event.target.value)}
@@ -188,7 +190,7 @@ export default function Form() {
             <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="condition">
+                <label className={style.label} htmlFor="City">
                   City:
                 </label>
               </div>
@@ -196,7 +198,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="condition"
+                  id="city"
                   className={style.input}
                   value={city}
                   onChange={(event) => setCity(event.target.value)}
@@ -207,7 +209,7 @@ export default function Form() {
             <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="condition">
+                <label className={style.label} htmlFor="State">
                   State:
                 </label>
               </div>
@@ -215,7 +217,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="condition"
+                  id="state"
                   className={style.input}
                   value={state}
                   onChange={(event) => setState(event.target.value)}
@@ -246,7 +248,7 @@ export default function Form() {
             <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="price">
+                <label className={style.label} htmlFor="Title">
                   Title Status:
                 </label>
               </div>
@@ -254,7 +256,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="price"
+                  id="Title"
                   className={style.input}
                   value={titleStatus}
                   onChange={(event) => setTitleStatus(event.target.value)}
@@ -268,7 +270,7 @@ export default function Form() {
             <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="condition">
+                <label className={style.label} htmlFor="Upload">
                   Upload Pictures:
                 </label>
               </div>
@@ -295,7 +297,7 @@ export default function Form() {
             <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="price">
+                <label className={style.label} htmlFor="Cylinders">
                   Cylinders:
                 </label>
               </div>
@@ -303,7 +305,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="price"
+                  id="cylinders"
                   className={style.input}
                   value={cylinders}
                   onChange={(event) => setCylinders(event.target.value)}
@@ -311,10 +313,11 @@ export default function Form() {
                   step="any"
                 />
               </div>
-            </div>            <div className={style.inputGroup}>
+            </div>{" "}
+            <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="price">
+                <label className={style.label} htmlFor="Drive">
                   Drive:
                 </label>
               </div>
@@ -322,7 +325,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="price"
+                  id="drive"
                   className={style.input}
                   value={drive}
                   onChange={(event) => setDrive(event.target.value)}
@@ -330,10 +333,11 @@ export default function Form() {
                   step="any"
                 />
               </div>
-            </div>            <div className={style.inputGroup}>
+            </div>{" "}
+            <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="price">
+                <label className={style.label} htmlFor="Fuel">
                   Fuel:
                 </label>
               </div>
@@ -341,7 +345,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="price"
+                  id="fuel"
                   className={style.input}
                   value={fuel}
                   onChange={(event) => setFuel(event.target.value)}
@@ -353,7 +357,7 @@ export default function Form() {
             <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="price">
+                <label className={style.label} htmlFor="Transmission">
                   Transmission:
                 </label>
               </div>
@@ -361,7 +365,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="price"
+                  id="transmission"
                   className={style.input}
                   value={transmission}
                   onChange={(event) => setTransmission(event.target.value)}
@@ -373,7 +377,7 @@ export default function Form() {
             <div className={style.inputGroup}>
               <div>
                 {" "}
-                <label className={style.label} htmlFor="price">
+                <label className={style.label} htmlFor="Type">
                   Type:
                 </label>
               </div>
@@ -381,7 +385,7 @@ export default function Form() {
                 {" "}
                 <input
                   type="text"
-                  id="price"
+                  id="type"
                   className={style.input}
                   value={type}
                   onChange={(event) => setType(event.target.value)}
@@ -419,11 +423,11 @@ export default function Form() {
         </div>
       </form>
       {transactionModalStatus && (
-          <Loading>
-            <h2>Hello, World!</h2>
-            <p>Minting NFT Please Hold</p>
-          </Loading>
-        )}
+        <Loading>
+          <h2>Hello, World!</h2>
+          <p>Minting NFT Please Hold</p>
+        </Loading>
+      )}
     </div>
   );
 }

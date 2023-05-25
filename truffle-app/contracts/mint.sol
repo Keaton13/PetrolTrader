@@ -6,16 +6,18 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-/**
- * @title Owner
- * @dev Set & change owner
- */
-
 contract MintCar is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
     constructor() ERC721("Car Dealership", "DLER") {}
+
+    /**
+    * @dev Mint a new car NFT.
+    * @param tokenURI The URI of the token metadata.
+    * @param approvedContract The address of the approved contract for transfer.
+    * @return The ID of the newly minted token.
+    */
 
     function mint(string memory tokenURI, address approvedContract) public returns (uint256) {
         _tokenIds.increment();
@@ -28,6 +30,10 @@ contract MintCar is ERC721URIStorage {
         return newItemId;
     }
 
+    /**
+    * @dev Get the total supply of car NFTs.
+    * @return The total supply of car NFTs.
+    */
     function totalSupply() public view returns (uint256) {
         return _tokenIds.current();
     }
