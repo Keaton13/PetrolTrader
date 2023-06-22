@@ -18,13 +18,13 @@ const style = {
 
 const Portfolio = () => {
   // Using the App Context to access soldNfts
-  const { soldNfts } = useAppContext();
+  const { portfolioNfts } = useAppContext();
 
   return (
     <div className={style.container}>
       <h1 className={style.title}>Portfolio</h1>
       <div className={style.grid}>
-        {soldNfts.map((card, index) => (
+        {portfolioNfts.map((card, index) => (
           <div key={index}>
             <Card key={index} card={card} />
           </div>
