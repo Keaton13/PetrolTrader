@@ -44,6 +44,12 @@ export const AppProvider = ({ children }) => {
   }, [address]);
 
   useEffect(() => {
+    if (nfts) {
+      loadPortfolioNftData();
+    }
+  }, [nfts, soldNfts]);
+
+  useEffect(() => {
     // initiating ETH contracts and saving contracts to state
     const contracts = createContract();
     const dealershipContract = contracts.dealerContract;
@@ -316,7 +322,6 @@ export const AppProvider = ({ children }) => {
     }
 
     setNfts(nfts);
-
   };
 
   /**
@@ -354,8 +359,8 @@ export const AppProvider = ({ children }) => {
       }
       try {
         nftSeller = await dealershipContract.methods
-        .buyer(soldSupply[i])
-        .call();
+          .buyer(soldSupply[i])
+          .call();
       } catch (error) {
         console.error(error);
       }
@@ -365,30 +370,28 @@ export const AppProvider = ({ children }) => {
       soldNfts.push([soldNftResponse.data, nftSoldPrice, nftSeller]);
     }
     setSoldNfts(soldNfts);
-    loadPortfolioNftData()
-
   };
 
   const loadPortfolioNftData = async () => {
     let portfolioNfts = [];
 
-    console.log(soldNfts)
+    // console.log(soldNfts);
 
-    for(let i=0; i < nfts.length; i++){
-      if(nfts[i][3] === address){
-        portfolioNfts.push(nfts[i])
+    for (let i = 0; i < nfts.length; i++) {
+      if (nfts[i][3] === address) {
+        portfolioNfts.push(nfts[i]);
       }
     }
 
-    for(let v=0; v < soldNfts.length; v++){
-      if(soldNfts[v][2] == address){
-        portfolioNfts.push(soldNfts[v])
+    for (let v = 0; v < soldNfts.length; v++) {
+      if (soldNfts[v][2] == address) {
+        portfolioNfts.push(soldNfts[v]);
       }
     }
 
     setPortfolioNfts(portfolioNfts);
-    console.log(portfolioNfts)
-  }
+    // console.log(portfolioNfts);
+  };
 
   /**
    * Remove a car token.
