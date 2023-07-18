@@ -13,23 +13,31 @@ const style = {
   car: "animate-bounce w-16 h-16 text-white",
   text: "mt-4 mb-5 text-white text-2xl text-center",
   textLogo: "text-white text-2xl",
+  textLogoNoNft: "text-white text-2xl font-bold",
   card: "bg-white rounded-lg shadow-lg p-6",
 };
 
 const Portfolio = () => {
   // Using the App Context to access soldNfts
   const { portfolioNfts } = useAppContext();
-
+  console.log(portfolioNfts);
   return (
     <div className={style.container}>
       <h1 className={style.title}>Portfolio</h1>
       <div className={style.grid}>
-        {portfolioNfts.map((card, index) => (
-          <div key={index}>
-            <Card key={index} card={card} />
-          </div>
-        ))}
+        {portfolioNfts.length >= 1 &&
+          portfolioNfts.map((card, index) => (
+            <div key={index}>
+              <Card key={index} card={card} />
+            </div>
+          ))}
       </div>
+      {portfolioNfts.length == 0 && (
+        <div>
+          <h1 className={style.textLogoNoNft}>No Portfolio NFTS</h1>
+          <h1 className={style.title}>:/</h1>
+        </div>
+      )}
     </div>
   );
 };
