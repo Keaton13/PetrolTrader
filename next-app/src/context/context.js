@@ -16,6 +16,7 @@ export const AppProvider = ({ children }) => {
   const [mintContract, setMintContract] = useState();
   const [nfts, setNfts] = useState();
   const [soldNfts, setSoldNfts] = useState();
+  const [portfolioNfts, setPortfolioNfts] = useState();
   const [card, setCard] = useState();
   const [button, setContextButton] = useState();
   const [events, setEvent] = useState();
@@ -315,6 +316,7 @@ export const AppProvider = ({ children }) => {
     }
 
     setNfts(nfts);
+
   };
 
   /**
@@ -330,6 +332,7 @@ export const AppProvider = ({ children }) => {
     for (let i = 0; i <= soldSupply.length - 1; i++) {
       let soldNftResponse;
       let nftSoldPrice;
+      let nftSeller;
 
       const soldUri = await mintContract.methods.tokenURI(soldSupply[i]).call();
 
@@ -349,13 +352,43 @@ export const AppProvider = ({ children }) => {
       } catch (error) {
         console.error(error);
       }
+      try {
+        nftSeller = await dealershipContract.methods
+        .buyer(soldSupply[i])
+        .call();
+      } catch (error) {
+        console.error(error);
+      }
       let status = {
         sold: true,
       };
-      soldNfts.push([soldNftResponse.data, nftSoldPrice]);
+      soldNfts.push([soldNftResponse.data, nftSoldPrice, nftSeller]);
     }
     setSoldNfts(soldNfts);
+    loadPortfolioNftData()
+
   };
+
+  const loadPortfolioNftData = async () => {
+    let portfolioNfts = [];
+
+    console.log(soldNfts)
+
+    for(let i=0; i < nfts.length; i++){
+      if(nfts[i][3] === address){
+        portfolioNfts.push(nfts[i])
+      }
+    }
+
+    for(let v=0; v < soldNfts.length; v++){
+      if(soldNfts[v][2] == address){
+        portfolioNfts.push(soldNfts[v])
+      }
+    }
+
+    setPortfolioNfts(portfolioNfts);
+    console.log(portfolioNfts)
+  }
 
   /**
    * Remove a car token.
@@ -525,6 +558,7 @@ export const AppProvider = ({ children }) => {
         transactionModalStatus,
         nfts,
         soldNfts,
+        portfolioNfts,
         events,
       }}
     >

@@ -8,6 +8,7 @@ import List from "../components/list";
 import Buy from "./buy";
 import Sold from "./sold";
 import Listing from "./lisiting";
+import Portfolio from "./portfolio";
 import { useAppContext } from "../context/context";
 
 export default function Home() {
@@ -53,6 +54,8 @@ export default function Home() {
     content = <Sold />;
   } else if (page == "Listing") {
     content = <Listing />
+  } else if (page === "Portfolio") {
+    content = <Portfolio />
   } else {
     content = (
       <div className={style.container}>
